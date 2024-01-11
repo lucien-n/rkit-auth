@@ -13,7 +13,7 @@
 	onMount(async () => {
 		tasks = await remult.repo(TaskEntity).find({
 			limit: 20,
-			orderBy: { createdAt: 'asc' }
+			orderBy: { createdAt: 'desc' }
 		});
 	});
 
