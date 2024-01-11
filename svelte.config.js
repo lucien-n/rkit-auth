@@ -9,7 +9,8 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$shadcn: './src/lib/shadcn',
-			$remult: './src/shared'
+			$remult: './src/shared',
+			$components: './src/lib/components'
 		}
 	}
 };

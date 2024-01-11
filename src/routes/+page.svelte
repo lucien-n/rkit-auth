@@ -44,7 +44,7 @@
 		<Separator variant="horizontal" class="my-6" />
 
 		<div class="flex flex-col gap-3">
-			{#each tasks as task (task.id)}
+			{#each tasks as task}
 				<Task {task} on:delete={({ detail: id }) => handleTaskDelete(id)} />
 			{/each}
 		</div>

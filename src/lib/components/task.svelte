@@ -26,7 +26,7 @@
 
 	const deleteTask = async () => {
 		await remult.repo(Task).delete(task);
-		dispatch('delete', task.id);
+		dispatch('delete', task.uid);
 	};
 </script>
 
@@ -46,7 +46,7 @@
 				{task.title}
 			</p>
 
-			<p class="text-xs font-semibold italic opacity-50">{task.id}</p>
+			<p class="text-xs font-semibold italic opacity-50">{task.uid}</p>
 		</div>
 	{/if}
 
