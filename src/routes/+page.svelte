@@ -1,23 +1,43 @@
 <script lang="ts">
-	import { Task } from '$remult/tasks/task.entity';
+	import Task from '$lib/components/task.svelte';
+	import { Task as TaskEntity } from '$remult/tasks/task.entity';
+	import { Button } from '$shadcn/components/ui/button';
+	import { Input } from '$shadcn/components/ui/input';
+	import { Separator } from '$shadcn/components/ui/separator';
 	import { remult } from 'remult';
 	import { onMount } from 'svelte';
 
-	let tasks: Task[] = [];
+	let tasks: TaskEntity[] = [];
 
 	onMount(async () => {
-		tasks = await remult.repo(Task).find();
+		tasks = await remult.repo(TaskEntity).find({
+			limit: 20,
+			orderBy: { createdAt: 'asc' }
+		});
 	});
+
+	let newTaskTitle = '';
+	const addTask = async () => {
+		const newTask = await remult.repo(TaskEntity).insert({ title: newTaskTitle });
+		tasks = [...tasks, newTask];
+		newTaskTitle = '';
+	};
 </script>
 
-<div>
-	<h1>todos</h1>
-	<main>
-		{#each tasks as task}
-			<div>
-				<input type="checkbox" bind:checked={task.completed} />
-				<span>{task.title}</span>
-			</div>
-		{/each}
+<div class="font-mono">
+	<h1 class="my-12 text-center text-7xl font-extrabold">Todos</h1>
+	<main class="container">
+		<form method="POST" on:submit|preventDefault={addTask} class="flex gap-3">
+			<Input bind:value={newTaskTitle} placeholder="What needs to be done?" />
+			<Button type="submit">Add</Button>
+		</form>
+
+		<Separator variant="horizontal" class="my-6" />
+
+		<div class="flex flex-col gap-3">
+			{#each tasks as task (task.id)}
+				<Task {task} />
+			{/each}
+		</div>
 	</main>
 </div>
