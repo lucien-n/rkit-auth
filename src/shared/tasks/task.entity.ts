@@ -1,9 +1,7 @@
 import { User } from '$remult/users/user.entity';
 import { Entity, Fields, Relations } from 'remult';
 
-@Entity('tasks', {
-	allowApiCrud: true
-})
+@Entity<Task>('tasks', {}) // how to authorize only authors using https://remult.dev/docs/ref_entity.html#apiprefilter
 export class Task {
 	@Fields.uuid()
 	uid!: string;
