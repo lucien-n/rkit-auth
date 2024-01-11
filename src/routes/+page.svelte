@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { Task } from '$remult/tasks/task.entity';
 	import { remult } from 'remult';
 	import { onMount } from 'svelte';
-	import { Task } from '../shared/Task';
 
 	let tasks: Task[] = [];
 
