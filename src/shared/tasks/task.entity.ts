@@ -5,7 +5,7 @@ import { Entity, Fields } from 'remult';
 })
 export class Task {
 	@Fields.uuid()
-	id!: string;
+	uid!: string;
 
 	@Fields.string()
 	title: string = '';
