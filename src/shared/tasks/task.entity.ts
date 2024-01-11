@@ -1,4 +1,5 @@
-import { Entity, Fields } from 'remult';
+import { User } from '$remult/users/user.entity';
+import { Entity, Fields, Relations } from 'remult';
 
 @Entity('tasks', {
 	allowApiCrud: true
@@ -18,4 +19,7 @@ export class Task {
 
 	@Fields.updatedAt()
 	updatedAt?: Date;
+
+	@Relations.toOne(() => User)
+	author!: User;
 }

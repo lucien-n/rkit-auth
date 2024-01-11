@@ -1,3 +1,4 @@
+import { Task } from '$remult/tasks/task.entity';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { Entity, Fields, Relations } from 'remult';
 
@@ -22,4 +23,7 @@ export class User {
 
 	@Relations.toOne(() => UserCredentials, { defaultIncluded: false })
 	credentials!: UserCredentials;
+
+	@Relations.toMany(() => Task)
+	tasks: Task[] = [];
 }
