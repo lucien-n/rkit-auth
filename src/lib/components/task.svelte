@@ -40,12 +40,11 @@
 		<Input name="title" bind:value={task.title} class="border-primary" />
 	{:else}
 		<div
-			class={cn(
-				task.completed && 'pointer-events-none  italic line-through opacity-80',
-				'flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50'
-			)}
+			class="flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
 		>
-			{task.title}
+			<p class={cn(task.completed && 'pointer-events-none  italic line-through opacity-80')}>
+				{task.title}
+			</p>
 
 			<p class="text-xs font-semibold italic opacity-50">{task.id}</p>
 		</div>
