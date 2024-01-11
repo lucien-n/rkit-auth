@@ -47,15 +47,15 @@
 	{/if}
 
 	{#if editing}
-		<Button on:click={() => saveTask(task)}>
+		<Button on:click={() => saveTask(task)} class="aspect-square p-0">
 			<Check />
 		</Button>
 	{:else}
-		<Button on:click={() => (editing = true)} disabled={task.completed}>
+		<Button on:click={() => (editing = true)} disabled={task.completed} class="aspect-square p-0">
 			<Pencil1 />
 		</Button>
 	{/if}
-	<Button variant="destructive" on:click={() => deleteTask(task)}>
+	<Button variant="destructive" class="aspect-square p-0" on:click={() => deleteTask(task)}>
 		<Trash />
 	</Button>
 </div>
