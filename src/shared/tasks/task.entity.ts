@@ -15,4 +15,7 @@ export class Task {
 
 	@Fields.createdAt()
 	createdAt?: Date;
+
+	@Fields.updatedAt()
+	updatedAt?: Date;
 }
