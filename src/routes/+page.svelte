@@ -4,6 +4,7 @@
 	import { Button } from '$shadcn/components/ui/button';
 	import { Input } from '$shadcn/components/ui/input';
 	import { Separator } from '$shadcn/components/ui/separator';
+	import { Plus } from 'radix-icons-svelte';
 	import { remult } from 'remult';
 	import { onMount } from 'svelte';
 
@@ -18,6 +19,8 @@
 
 	let newTaskTitle = '';
 	const addTask = async () => {
+		if (!newTaskTitle) return;
+
 		const newTask = await remult.repo(TaskEntity).insert({ title: newTaskTitle });
 		tasks = [...tasks, newTask];
 		newTaskTitle = '';
@@ -33,7 +36,9 @@
 	<main class="container">
 		<form method="POST" on:submit|preventDefault={addTask} class="flex gap-3">
 			<Input bind:value={newTaskTitle} placeholder="What needs to be done?" />
-			<Button type="submit">Add</Button>
+			<Button type="submit" class="flex items-center gap-1">
+				<Plus />
+			</Button>
 		</form>
 
 		<Separator variant="horizontal" class="my-6" />
