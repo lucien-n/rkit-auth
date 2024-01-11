@@ -22,6 +22,10 @@
 		tasks = [...tasks, newTask];
 		newTaskTitle = '';
 	};
+
+	const handleTaskDelete = (taskId: string) => {
+		tasks = tasks.filter((task) => task.id !== taskId);
+	};
 </script>
 
 <div class="font-mono">
@@ -36,7 +40,7 @@
 
 		<div class="flex flex-col gap-3">
 			{#each tasks as task (task.id)}
-				<Task {task} />
+				<Task {task} on:delete={({ detail: id }) => handleTaskDelete(id)} />
 			{/each}
 		</div>
 	</main>

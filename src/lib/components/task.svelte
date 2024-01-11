@@ -6,8 +6,11 @@
 	import { cn } from '$shadcn/utils';
 	import { Check, Pencil1, Trash } from 'radix-icons-svelte';
 	import { remult } from 'remult';
+	import { createEventDispatcher } from 'svelte';
 
 	export let task: Task;
+
+	const dispatch = createEventDispatcher();
 
 	let editing = false;
 
@@ -23,7 +26,7 @@
 
 	const deleteTask = async () => {
 		await remult.repo(Task).delete(task);
-		tasks = tasks.filter((c) => c.id !== task.id);
+		dispatch('delete', task.id);
 	};
 </script>
 
