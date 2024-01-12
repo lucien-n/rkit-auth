@@ -22,10 +22,6 @@ export const handleRemult = remultSveltekit({
 
 		return undefined;
 	},
-	initApi: async (remult) => {
-		const users = await remult.repo(User).find();
-		console.table(users);
-	},
 	entities,
 	controllers
 });
