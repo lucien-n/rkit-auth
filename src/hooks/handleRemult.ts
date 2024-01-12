@@ -1,7 +1,6 @@
 import { PRIVATE_DATABASE_URL } from '$env/static/private';
 import { controllers, entities } from '$remult';
-import { User } from '$remult/users/user.entity';
-import { remult } from 'remult';
+import { UserController } from '$remult/users/user.controller';
 import { createPostgresDataProvider } from 'remult/postgres';
 import { remultSveltekit } from 'remult/remult-sveltekit';
 
@@ -11,7 +10,7 @@ export const handleRemult = remultSveltekit({
 		const session = await event?.locals?.getSession();
 
 		if (session && session.user) {
-			const user = await remult.repo(User).findFirst({ id: [session.user.id!] });
+			const user = await UserController.findById(session.user.id!);
 			if (user) {
 				return {
 					id: user.id,
