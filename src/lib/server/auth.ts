@@ -1,15 +1,15 @@
 import { AuthError, type Credentials } from '$lib/types';
 import type { User } from '@auth/sveltekit';
-import type { RequestEvent } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { handleRemult } from '../../hooks/handleRemult';
 import { UsersController } from '../../shared/users/users.controller';
 
 export const authorize = async (
 	credentials: Credentials,
-	request: RequestEvent<Partial<Record<string, string>>, string | null>
+	request: Request
 ): Promise<User | null> => {
-	const user = await handleRemult.withRemult(request, () =>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const user = await handleRemult.withRemult({ request } as any, () =>
 		UsersController.findByEmail(credentials.email, { credentials: true })
 	);
 
