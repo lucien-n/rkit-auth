@@ -1,8 +1,8 @@
 import { UserController } from '$remult/users/user.controller';
 import { Allow, BackendMethod, Controller, remult } from 'remult';
-import type { CreateTask } from './dto/create-task';
 import { Task } from './task.entity';
 import { ForbiddebError } from '$remult/helpers';
+import type { CreateTaskInput } from './dto/create-task.input';
 
 @Controller('TaskController')
 export class TaskController {
@@ -12,16 +12,39 @@ export class TaskController {
 	static async findByAuthor(authorUid: string) {
 		if (authorUid !== remult.user?.id) throw new ForbiddebError();
 
-		const task = (await remult.repo(Task).find())[0];
-		return task;
+		return remult
+			.repo(Task)
+			.find({ where: { authorId: remult.user.id } })
+			.then((tasks) =>
+				tasks.map((task) => {
+					return {
+						id: task.id,
+						title: task.title,
+						completed: task.completed,
+						authorId: task.authorId
+					};
+				})
+			);
 	}
 
 	@BackendMethod({ allowed: Allow.authenticated })
-	static async create({ title }: CreateTask) {
+	static async create({ title }: CreateTaskInput) {
 		const user = remult.user;
 		if (!user) throw 'User not found';
 
 		const author = await UserController.findById(user.id);
-		return remult.repo(Task).insert({ title, author });
+		if (!author) throw 'User not found';
+
+		return remult
+			.repo(Task)
+			.insert({ title, author })
+			.then((task) => {
+				return {
+					id: task.id,
+					title: task.title,
+					completed: task.completed,
+					authorId: task.authorId
+				};
+			});
 	}
 }

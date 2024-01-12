@@ -3,7 +3,7 @@ import { Entity, Fields, Relations } from 'remult';
 
 @Entity<UserCredentials>('user-credentials')
 export class UserCredentials {
-	@Fields.uuid()
+	@Fields.cuid()
 	id!: string;
 
 	@Fields.string()
