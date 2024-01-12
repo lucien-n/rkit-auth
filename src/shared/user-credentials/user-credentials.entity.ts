@@ -1,10 +1,10 @@
 import { User } from '$remult/users/user.entity';
 import { Entity, Fields, Relations } from 'remult';
 
-@Entity('user-credentials')
+@Entity<UserCredentials>('user-credentials')
 export class UserCredentials {
 	@Fields.uuid()
-	uid!: string;
+	id!: string;
 
 	@Fields.string()
 	email!: string;
@@ -12,6 +12,9 @@ export class UserCredentials {
 	@Fields.string()
 	passwordHash!: string;
 
-	@Relations.toOne(() => User, { defaultIncluded: false })
-	user!: User;
+	@Fields.string()
+	userId: string = '';
+
+	@Relations.toOne(() => User, { field: 'userId', defaultIncluded: false })
+	user?: User;
 }

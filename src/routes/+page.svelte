@@ -26,8 +26,8 @@
 		newTaskTitle = '';
 	};
 
-	const handleTaskDelete = (taskId: string) => {
-		tasks = tasks.filter((task) => task.id !== taskId);
+	const handleTaskDelete = (taskUid: string) => {
+		tasks = tasks.filter((task) => task.uid !== taskUid);
 	};
 </script>
 
@@ -41,7 +41,7 @@
 			</Button>
 		</form>
 
-		<Separator variant="horizontal" class="my-6" />
+		<Separator orientation="horizontal" class="my-6" />
 
 		<div class="flex flex-col gap-3">
 			{#each tasks as task}

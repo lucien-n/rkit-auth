@@ -29,19 +29,18 @@ export const actions: Actions = {
 		const hash = await bcrypt.hash(password, salt);
 
 		try {
-			const user = await UserController.create({
+			await UserController.create({
 				username,
 				email,
-				hashedPassword: hash
+				passwordHash: hash
 			});
-
-			return {
-				form,
-				user
-			};
 		} catch (e) {
 			console.warn(e);
 			return fail(401, { form, message: e });
 		}
+
+		return {
+			form
+		};
 	}
 };

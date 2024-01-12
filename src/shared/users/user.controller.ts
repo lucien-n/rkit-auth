@@ -11,17 +11,14 @@ export class UserController {
 		const credentials = await remult
 			.repo(UserCredentials)
 			.findFirst({ email }, { include: { user: true } });
+		if (!credentials) return null;
 
-		const user = await remult.repo(User).findFirst({ uid: credentials.user.uid }, { include });
-
-		await remult.repo(UserCredentials).update(credentials.uid, { user });
-
-		return user;
+		return remult.repo(User).findFirst({ id: credentials.user?.id }, { include });
 	}
 
 	@BackendMethod({ allowed: true })
 	static async findById(uid: string) {
-		return remult.repo(User).findFirst({ uid });
+		return remult.repo(User).findFirst({ id: uid });
 	}
 
 	@BackendMethod({ allowed: true })
@@ -38,17 +35,16 @@ export class UserController {
 		if (error) throw error;
 
 		const user = await remult.repo(User).insert({ username });
+
 		const userCredentials = await remult
 			.repo(UserCredentials)
 			.insert({ email, passwordHash, user });
 
-		const updatedUser = await remult.repo(User).update(user.uid, {
+		await remult.repo(User).update(user.id, {
 			credentials: userCredentials
 		});
 
-		console.log(updatedUser);
-
-		return updatedUser;
+		return user;
 	}
 
 	@BackendMethod({ allowed: true })
@@ -57,7 +53,7 @@ export class UserController {
 			include: { credentials: true }
 		})) {
 			if (username === existingUser.username) return 'Username already taken';
-			if (email === existingUser.credentials.email) return 'Email already used';
+			if (email === existingUser.credentials?.email) return 'Email already used';
 		}
 
 		return false;

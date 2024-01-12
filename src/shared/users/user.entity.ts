@@ -1,11 +1,10 @@
-import { Task } from '$remult/tasks/task.entity';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { Entity, Fields, Relations } from 'remult';
 
-@Entity('user')
+@Entity<User>('users')
 export class User {
 	@Fields.uuid()
-	uid!: string;
+	id!: string;
 
 	@Fields.string({
 		validate: ({ username }: { username: string }) => {
@@ -22,8 +21,5 @@ export class User {
 	updatedAt?: Date;
 
 	@Relations.toOne(() => UserCredentials, { defaultIncluded: false })
-	credentials!: UserCredentials;
-
-	@Relations.toMany(() => Task)
-	tasks: Task[] = [];
+	credentials?: UserCredentials;
 }

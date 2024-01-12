@@ -11,19 +11,20 @@ export const handleAuth = SvelteKitAuth(async () => {
 		providers: [
 			Credentials({
 				type: 'credentials',
-				authorize: async (credentials, request) =>
-					(await authorize(credentials, request)).credentials
+				authorize: async (credentials, request) => await authorize(credentials, request)
 			})
 		],
 		callbacks: {
 			session: async ({ session }: { session: any }) => {
-				const { uid, username } = await UserController.findByEmail(session.email);
+				const user = await UserController.findByEmail(session.email);
+
+				if (!user) return session;
 
 				return {
 					...session,
 					user: {
-						id: uid,
-						name: username
+						id: user.id,
+						name: user.username
 					}
 				};
 			}

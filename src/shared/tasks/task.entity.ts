@@ -4,7 +4,7 @@ import { Entity, Fields, Relations } from 'remult';
 @Entity<Task>('tasks', {}) // how to authorize only authors using https://remult.dev/docs/ref_entity.html#apiprefilter
 export class Task {
 	@Fields.uuid()
-	uid!: string;
+	id!: string;
 
 	@Fields.string()
 	title: string = '';
@@ -18,6 +18,9 @@ export class Task {
 	@Fields.updatedAt()
 	updatedAt?: Date;
 
-	@Relations.toOne(() => User)
-	author!: User;
+	@Fields.string()
+	authorId: string = '';
+
+	@Relations.toOne(() => User, { field: 'authorId' })
+	author?: User;
 }
