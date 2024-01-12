@@ -1,4 +1,4 @@
-import { TaskController } from '$remult/tasks/task.controller';
+import { TasksController } from '$remult/tasks/tasks.controller';
 import { superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 import { taskSchema } from '$lib/schemas';
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 
 	if (session?.user?.id) {
 		return {
-			tasks: TaskController.findByAuthor(session.user.id),
+			tasks: TasksController.findByAuthor(session.user.id),
 			form
 		};
 	}
@@ -32,7 +32,7 @@ export const actions: Actions = {
 
 		const { title } = form.data;
 
-		const task = await TaskController.create({ title });
+		const task = await TasksController.create({ title });
 
 		console.log(task);
 
