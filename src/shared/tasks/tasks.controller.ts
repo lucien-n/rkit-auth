@@ -1,7 +1,7 @@
 import { UsersController } from '$remult/users/users.controller';
 import { Allow, BackendMethod, Controller, remult } from 'remult';
 import { Task } from './task.entity';
-import { ForbiddebError } from '$remult/helpers';
+import { ForbiddenError } from '$remult/helpers';
 import type { CreateTaskInput } from './dto/create-task.input';
 
 @Controller('TasksController')
@@ -10,7 +10,7 @@ export class TasksController {
 
 	@BackendMethod({ allowed: Allow.authenticated })
 	static async findByAuthor(authorUid: string) {
-		if (authorUid !== remult.user?.id) throw new ForbiddebError();
+		if (authorUid !== remult.user?.id) throw new ForbiddenError();
 
 		return remult
 			.repo(Task)
