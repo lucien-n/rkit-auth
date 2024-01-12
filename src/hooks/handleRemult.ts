@@ -11,7 +11,7 @@ export const handleRemult = remultSveltekit({
 		const session = await event?.locals?.getSession();
 
 		if (session && session.user) {
-			const user = await remult.repo(User).findFirst({ username: [session.user.name!] });
+			const user = await remult.repo(User).findFirst({ id: [session.user.id!] });
 			if (user) {
 				return {
 					id: user.id,
