@@ -35,7 +35,7 @@
 
 		<div class="flex flex-col gap-3">
 			{#if tasks?.length}
-				{#each tasks as task}
+				{#each tasks as task (task.id)}
 					<Task {task} />
 				{/each}
 			{:else}

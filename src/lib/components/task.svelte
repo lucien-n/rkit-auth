@@ -29,7 +29,7 @@
 <div class="my-1 flex w-full gap-3">
 	<Checkbox
 		class="self-center"
-		bind:checked={task.completed}
+		checked={task.completed}
 		on:click={() => setCompleted(!task.completed)}
 	/>
 	{#if editing}
