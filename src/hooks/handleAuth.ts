@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PRIVATE_AUTH_SECRET } from '$env/static/private';
 import { authorize } from '$lib/server/auth';
+import { User } from '$remult/users/user.entity';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import type { Handle } from '@sveltejs/kit';
-import { UserController } from '../shared/users/user.controller';
+import { remult } from 'remult';
 
 export const handleAuth = SvelteKitAuth(async () => {
 	const authOptions = {
@@ -16,17 +17,19 @@ export const handleAuth = SvelteKitAuth(async () => {
 		],
 		callbacks: {
 			session: async ({ session }: { session: any }) => {
-				const user = await UserController.findByEmail(session.email);
+				if (session.user?.id) {
+					const user = await remult.repo(User).findFirst({ id: session.user.id });
 
-				if (!user) return session;
+					return {
+						...session,
+						user: {
+							id: user.id,
+							name: user.username
+						}
+					};
+				}
 
-				return {
-					...session,
-					user: {
-						id: user.id,
-						name: user.username
-					}
-				};
+				return session;
 			}
 		},
 		secret: PRIVATE_AUTH_SECRET,

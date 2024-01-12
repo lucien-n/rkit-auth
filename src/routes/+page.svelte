@@ -27,7 +27,12 @@
 </script>
 
 <div class="font-mono">
-	<h1 class="my-12 text-center text-7xl font-extrabold">Todos</h1>
+	<div class="my-12 text-center">
+		<h1 class="text-5xl tracking-tight">
+			Welcome,<strong>{data.user?.name}</strong>
+		</h1>
+		<p class="text-muted-foreground">{data.user?.id}</p>
+	</div>
 	<main class="container">
 		<TaskForm form={data.form} />
 

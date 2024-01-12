@@ -4,7 +4,7 @@ import { Entity, Fields, Relations, remult } from 'remult';
 @Entity<Task>('tasks', {
 	allowApiDelete: (task, c) => task?.authorId === c?.user?.id,
 	allowApiUpdate: (task, c) => task?.authorId === c?.user?.id,
-	apiPrefilter: () => (remult.isAllowed('admin') ? {} : { authorId: remult.user?.id ?? '' })
+	apiPrefilter: () => (remult.isAllowed('admin') ? {} : { authorId: remult.user?.id ?? '1' })
 })
 export class Task {
 	@Fields.cuid()
