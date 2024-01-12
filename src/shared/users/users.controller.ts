@@ -1,4 +1,5 @@
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
+import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
 import { User } from './user.entity';
 
@@ -25,14 +26,17 @@ export class UsersController {
 	static async create({
 		username,
 		email,
-		passwordHash
+		password
 	}: {
 		username: string;
 		email: string;
-		passwordHash: string;
+		password: string;
 	}) {
 		const error = await this.exists({ username, email });
 		if (error) throw error;
+
+		const salt = bcrypt.genSaltSync();
+		const passwordHash = await bcrypt.hash(password, salt);
 
 		const user = await remult.repo(User).insert({ username });
 
