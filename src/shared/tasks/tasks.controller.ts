@@ -1,11 +1,11 @@
-import { UserController } from '$remult/users/user.controller';
+import { UsersController } from '$remult/users/users.controller';
 import { Allow, BackendMethod, Controller, remult } from 'remult';
 import { Task } from './task.entity';
 import { ForbiddebError } from '$remult/helpers';
 import type { CreateTaskInput } from './dto/create-task.input';
 
-@Controller('TaskController')
-export class TaskController {
+@Controller('TasksController')
+export class TasksController {
 	constructor() {}
 
 	@BackendMethod({ allowed: Allow.authenticated })
@@ -32,7 +32,7 @@ export class TaskController {
 		const user = remult.user;
 		if (!user) throw 'User not found';
 
-		const author = await UserController.findById(user.id);
+		const author = await UsersController.findById(user.id);
 		if (!author) throw 'User not found';
 
 		return remult

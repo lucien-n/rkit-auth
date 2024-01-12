@@ -2,12 +2,12 @@ import { UserCredentials } from '$remult/user-credentials/user-credentials.entit
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
 import { User } from './user.entity';
 
-@Controller('UserController')
-export class UserController {
+@Controller('UsersController')
+export class UsersController {
 	constructor() {}
 
 	@BackendMethod({ allowed: true })
-	static async findByEmail(email: string, include?: MembersToInclude<UserController>) {
+	static async findByEmail(email: string, include?: MembersToInclude<UsersController>) {
 		const credentials = await remult
 			.repo(UserCredentials)
 			.findFirst({ email }, { include: { user: true } });

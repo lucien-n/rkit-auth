@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { User } from '@auth/sveltekit';
 import { handleRemult } from '../../hooks/handleRemult';
-import { UserController } from '../../shared/users/user.controller';
+import { UsersController } from '../../shared/users/users.controller';
 
 export const authorize = async (credentials: any, request: Request): Promise<User | null> => {
 	const user = await handleRemult.withRemult({ request } as any, () =>
-		UserController.findByEmail(credentials.email, { credentials: true })
+		UsersController.findByEmail(credentials.email, { credentials: true })
 	);
 
 	if (!user) return null;
