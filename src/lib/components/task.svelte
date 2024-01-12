@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { taskSchema } from '$lib/schemas';
 	import { Task } from '$remult/tasks/task.entity';
 	import { Button } from '$shadcn/components/ui/button';
 	import { Checkbox } from '$shadcn/components/ui/checkbox';
@@ -7,7 +6,6 @@
 	import { cn } from '$shadcn/utils';
 	import { Check, Pencil1, Trash } from 'radix-icons-svelte';
 	import { remult } from 'remult';
-	import { createEventDispatcher } from 'svelte';
 
 	export let task: Task;
 

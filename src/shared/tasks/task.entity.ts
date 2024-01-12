@@ -1,10 +1,10 @@
 import { User } from '$remult/users/user.entity';
-import { Entity, Fields, Relations } from 'remult';
+import { Entity, Fields, Relations, remult } from 'remult';
 
 @Entity<Task>('tasks', {
 	allowApiDelete: (task, c) => task?.authorId === c?.user?.id,
 	allowApiUpdate: (task, c) => task?.authorId === c?.user?.id,
-	allowApiRead: true
+	apiPrefilter: () => ({ authorId: remult.user?.id })
 }) // how to authorize only authors using https://remult.dev/docs/ref_entity.html#apiprefilter
 export class Task {
 	@Fields.cuid()
