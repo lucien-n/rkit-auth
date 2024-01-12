@@ -10,7 +10,7 @@ export class UsersController {
 	static async findByEmail(email: string, include?: MembersToInclude<UsersController>) {
 		const credentials = await remult
 			.repo(UserCredentials)
-			.findFirst({ email }, { include: { user: true } });
+			.findFirst({ email: email.toLowerCase() }, { include: { user: true } });
 		if (!credentials) return null;
 
 		return remult.repo(User).findFirst({ id: credentials.user?.id }, { include });
