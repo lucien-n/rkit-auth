@@ -29,7 +29,7 @@
 <div class="font-mono">
 	<div class="my-12 text-center">
 		<h1 class="text-5xl tracking-tight">
-			Welcome,<strong>{data.user?.name}</strong>
+			Welcome, <strong>{data.user?.name}</strong>
 		</h1>
 		<p class="text-muted-foreground">{data.user?.id}</p>
 	</div>
