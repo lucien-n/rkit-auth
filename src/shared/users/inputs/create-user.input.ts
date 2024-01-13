@@ -1,10 +1,10 @@
 import { getZString, getZStringErrors as gzse } from '$remult/helpers';
 import { z } from 'zod';
-import { userRules } from '../user.rules';
+import rules from '../user.rules';
 
 export const createUserSchema = z.object({
-	username: getZString('username', userRules.username),
-	password: getZString('password', userRules.password),
+	username: getZString('username', rules.username),
+	password: getZString('password', rules.password),
 	email: z.string(gzse('email')).email('Invalid email')
 });
 

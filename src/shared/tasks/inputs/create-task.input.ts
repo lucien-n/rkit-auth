@@ -1,14 +1,9 @@
-import { getZLengthError as gzle, getZStringErrors as gzse } from '$remult/helpers';
+import { getZString } from '$remult/helpers';
 import { z } from 'zod';
-
-const TITLE_MIN = 2;
-const TITLE_MAX = 250;
+import rules from '../task.rules';
 
 export const createTaskSchema = z.object({
-	title: z
-		.string(gzse('title'))
-		.min(TITLE_MIN, gzle(TITLE_MIN, 'title'))
-		.max(TITLE_MAX, gzle(TITLE_MAX, 'title', 'max'))
+	title: getZString('title', rules.title)
 });
 
 export type CreateTaskSchema = typeof createTaskSchema;

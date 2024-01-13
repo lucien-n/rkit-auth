@@ -1,4 +1,4 @@
-export const userRules = {
+export default {
 	username: { min: 3, max: 24 },
 	password: { min: 8, max: 255 }
 };
