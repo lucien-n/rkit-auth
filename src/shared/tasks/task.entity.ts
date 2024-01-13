@@ -18,6 +18,9 @@ export class Task {
 	@Fields.updatedAt()
 	updatedAt?: Date;
 
-	@Relations.toOne(() => User)
+	@Fields.string()
+	authorId: string = '';
+
+	@Relations.toOne(() => User, { field: 'authorId' })
 	author!: User;
 }

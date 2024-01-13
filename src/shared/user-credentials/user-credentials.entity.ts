@@ -12,6 +12,9 @@ export class UserCredentials {
 	@Fields.string()
 	passwordHash!: string;
 
-	@Relations.toOne(() => User, { defaultIncluded: false })
+	@Fields.string()
+	userId: string = '';
+
+	@Relations.toOne(() => User, { field: 'userId', defaultIncluded: false })
 	user!: User;
 }
