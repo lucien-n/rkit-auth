@@ -1,4 +1,4 @@
-import { createTaskSchema } from '$remult/tasks/dto/create-task.input';
+import { createTaskSchema } from '$remult/tasks/inputs/create-task.input';
 import { TasksController } from '$remult/tasks/tasks.controller';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';

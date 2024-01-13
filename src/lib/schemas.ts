@@ -1,4 +1,4 @@
-import { createUserSchema } from '$remult/users/dto/create-user.input';
+import { createUserSchema } from '$remult/users/inputs/create-user.input';
 
 export const signInSchema = createUserSchema.omit({ username: true });
 export type SignInSchema = typeof signInSchema;

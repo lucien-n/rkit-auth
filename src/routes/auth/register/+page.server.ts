@@ -1,4 +1,4 @@
-import { createUserSchema } from '$remult/users/dto/create-user.input';
+import { createUserSchema } from '$remult/users/inputs/create-user.input';
 import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';

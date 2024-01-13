@@ -1,8 +1,8 @@
+import { ForbiddenError } from '$remult/helpers';
 import { UsersController } from '$remult/users/users.controller';
 import { Allow, BackendMethod, Controller, remult } from 'remult';
+import type { CreateTaskInput } from './inputs/create-task.input';
 import { Task } from './task.entity';
-import { ForbiddenError } from '$remult/helpers';
-import type { CreateTaskInput } from './dto/create-task.input';
 
 @Controller('TasksController')
 export class TasksController {

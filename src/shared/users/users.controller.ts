@@ -1,7 +1,7 @@
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
-import { createUserSchema, type CreateUserInput } from './dto/create-user.input';
+import { createUserSchema, type CreateUserInput } from './inputs/create-user.input';
 import { User } from './user.entity';
 
 @Controller('UsersController')

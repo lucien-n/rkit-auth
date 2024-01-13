@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { createUserSchema, type CreateUserSchema } from '$remult/users/dto/create-user.input';
+	import { createUserSchema, type CreateUserSchema } from '$remult/users/inputs/create-user.input';
 	import * as Alert from '$shadcn/components/ui/alert';
 	import * as Form from '$shadcn/components/ui/form';
 	import { signIn } from '@auth/sveltekit/client';
