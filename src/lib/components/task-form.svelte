@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { createTaskSchema, type CreateTaskSchema } from '$remult/tasks/dto/create-task.input';
 	import * as Form from '$shadcn/components/ui/form';
-	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { SubmitFunction } from 'formsnap';
 	import { Plus } from 'radix-icons-svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
@@ -13,7 +13,7 @@
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
 
-		return async ({ result }) => {
+		return async () => {
 			loading = false;
 		};
 	};
