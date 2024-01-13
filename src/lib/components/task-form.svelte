@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { taskSchema, type TaskSchema } from '$lib/schemas';
+	import { createTaskSchema, type CreateTaskSchema } from '$remult/tasks/dto/create-task.input';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { Plus } from 'radix-icons-svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	export let form: SuperValidated<TaskSchema>;
+	export let form: SuperValidated<CreateTaskSchema>;
 
 	let loading = false;
 
@@ -19,7 +19,7 @@
 	};
 </script>
 
-<Form.Root {form} schema={taskSchema} let:config>
+<Form.Root {form} schema={createTaskSchema} let:config>
 	<form method="POST" class="flex items-center gap-3" use:enhance={handleSubmit}>
 		<Form.Field {config} name="title">
 			<Form.Item class="w-full space-y-0">

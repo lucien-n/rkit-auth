@@ -4,7 +4,7 @@ import { z } from 'zod';
 const TITLE_MIN = 2;
 const TITLE_MAX = 250;
 
-const createTaskSchema = z.object({
+export const createTaskSchema = z.object({
 	title: z
 		.string(gzse('title'))
 		.min(TITLE_MIN, gzle(TITLE_MIN, 'title'))
