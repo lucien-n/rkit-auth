@@ -19,9 +19,8 @@ export const signUpSchema = z.object({
 
 export type SignUpSchema = typeof signUpSchema;
 
-export const postSchema = z.object({
-	title: z.string().min(3).max(250),
-	content: z.string().min(0).max(2500)
+export const taskSchema = z.object({
+	title: z.string().min(3).max(250)
 });
 
-export type PostSchema = typeof postSchema;
+export type TaskSchema = typeof taskSchema;

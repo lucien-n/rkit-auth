@@ -19,11 +19,13 @@
 
 			message = result.data.message;
 
-			const { email, password } = form.data;
-			signIn('credentials', {
-				email,
-				password
-			});
+			if (result.type === 'success') {
+				const { email, password } = form.data;
+				signIn('credentials', {
+					email,
+					password
+				});
+			}
 		};
 	};
 </script>

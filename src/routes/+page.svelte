@@ -1,52 +1,53 @@
 <script lang="ts">
+	import TaskForm from '$components/task-form.svelte';
 	import Task from '$lib/components/task.svelte';
 	import { Task as TaskEntity } from '$remult/tasks/task.entity';
-	import { Button } from '$shadcn/components/ui/button';
-	import { Input } from '$shadcn/components/ui/input';
 	import { Separator } from '$shadcn/components/ui/separator';
-	import { Plus } from 'radix-icons-svelte';
 	import { remult } from 'remult';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let tasks: TaskEntity[] = [];
+	let unSub: (() => void) | null = null;
 
-	onMount(async () => {
-		tasks = await remult.repo(TaskEntity).find({
-			limit: 20,
-			orderBy: { createdAt: 'desc' }
-		});
+	onMount(() => {
+		unSub = remult
+			.repo(TaskEntity)
+			.liveQuery()
+			.subscribe((info) => {
+				tasks = info.applyChanges(tasks);
+			});
 	});
 
-	let newTaskTitle = '';
-	const addTask = async () => {
-		if (!newTaskTitle) return;
-
-		const newTask = await remult.repo(TaskEntity).insert({ title: newTaskTitle });
-		tasks = [...tasks, newTask];
-		newTaskTitle = '';
-	};
-
-	const handleTaskDelete = (taskId: string) => {
-		tasks = tasks.filter((task) => task.id !== taskId);
-	};
+	onDestroy(() => {
+		unSub && unSub();
+	});
 </script>
 
 <div class="font-mono">
-	<h1 class="my-12 text-center text-7xl font-extrabold">Todos</h1>
+	<div class="my-12 text-center">
+		<h1 class="text-5xl tracking-tight">
+			Welcome,<strong>{data.user?.name}</strong>
+		</h1>
+		<p class="text-muted-foreground">{data.user?.id}</p>
+	</div>
 	<main class="container">
-		<form method="POST" on:submit|preventDefault={addTask} class="flex gap-3">
-			<Input bind:value={newTaskTitle} placeholder="What needs to be done?" />
-			<Button type="submit" class="flex items-center gap-1">
-				<Plus />
-			</Button>
-		</form>
+		<TaskForm form={data.form} />
 
-		<Separator variant="horizontal" class="my-6" />
+		<Separator orientation="horizontal" class="my-6" />
 
 		<div class="flex flex-col gap-3">
-			{#each tasks as task}
-				<Task {task} on:delete={({ detail: id }) => handleTaskDelete(id)} />
-			{/each}
+			{#if tasks?.length}
+				{#each tasks as task (task.id)}
+					<Task {task} />
+				{/each}
+			{:else}
+				<div class="items-center text-center text-3xl italic text-muted-foreground">
+					You don't have any task!
+				</div>
+			{/if}
 		</div>
 	</main>
 </div>

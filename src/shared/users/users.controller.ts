@@ -1,54 +1,54 @@
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
+import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
 import { User } from './user.entity';
 
-@Controller('UserController')
-export class UserController {
+@Controller('UsersController')
+export class UsersController {
 	constructor() {}
 
 	@BackendMethod({ allowed: true })
-	static async findByEmail(email: string, include?: MembersToInclude<UserController>) {
+	static async findByEmail(email: string, include?: MembersToInclude<UsersController>) {
 		const credentials = await remult
 			.repo(UserCredentials)
-			.findFirst({ email }, { include: { user: true } });
+			.findFirst({ email: email.toLowerCase() }, { include: { user: true } });
+		if (!credentials) return null;
 
-		const user = await remult.repo(User).findFirst({ uid: credentials.user.uid }, { include });
-
-		await remult.repo(UserCredentials).update(credentials.uid, { user });
-
-		return user;
+		return remult.repo(User).findFirst({ id: credentials.user?.id }, { include });
 	}
 
 	@BackendMethod({ allowed: true })
 	static async findById(uid: string) {
-		return remult.repo(User).findFirst({ uid });
+		return remult.repo(User).findFirst({ id: uid });
 	}
 
 	@BackendMethod({ allowed: true })
 	static async create({
 		username,
 		email,
-		passwordHash
+		password
 	}: {
 		username: string;
 		email: string;
-		passwordHash: string;
+		password: string;
 	}) {
 		const error = await this.exists({ username, email });
 		if (error) throw error;
 
+		const salt = bcrypt.genSaltSync();
+		const passwordHash = await bcrypt.hash(password, salt);
+
 		const user = await remult.repo(User).insert({ username });
+
 		const userCredentials = await remult
 			.repo(UserCredentials)
 			.insert({ email, passwordHash, user });
 
-		const updatedUser = await remult.repo(User).update(user.uid, {
+		await remult.repo(User).update(user.id, {
 			credentials: userCredentials
 		});
 
-		console.log(updatedUser);
-
-		return updatedUser;
+		return user;
 	}
 
 	@BackendMethod({ allowed: true })
@@ -57,7 +57,7 @@ export class UserController {
 			include: { credentials: true }
 		})) {
 			if (username === existingUser.username) return 'Username already taken';
-			if (email === existingUser.credentials.email) return 'Email already used';
+			if (email === existingUser.credentials?.email) return 'Email already used';
 		}
 
 		return false;

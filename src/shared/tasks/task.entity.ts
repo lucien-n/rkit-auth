@@ -1,10 +1,14 @@
 import { User } from '$remult/users/user.entity';
-import { Entity, Fields, Relations } from 'remult';
+import { Entity, Fields, Relations, remult } from 'remult';
 
-@Entity<Task>('tasks', {}) // how to authorize only authors using https://remult.dev/docs/ref_entity.html#apiprefilter
+@Entity<Task>('tasks', {
+	allowApiDelete: (task, c) => task?.authorId === c?.user?.id,
+	allowApiUpdate: (task, c) => task?.authorId === c?.user?.id,
+	apiPrefilter: () => (remult.isAllowed('admin') ? {} : { authorId: remult.user?.id ?? '1' })
+})
 export class Task {
-	@Fields.uuid()
-	uid!: string;
+	@Fields.cuid()
+	id!: string;
 
 	@Fields.string()
 	title: string = '';
@@ -21,6 +25,6 @@ export class Task {
 	@Fields.string()
 	authorId: string = '';
 
-	@Relations.toOne(() => User, { field: 'authorId' })
-	author!: User;
+	@Relations.toOne(() => User, { field: 'authorId', defaultIncluded: false })
+	author?: User;
 }

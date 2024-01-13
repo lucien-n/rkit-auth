@@ -1,6 +1,7 @@
 import { Task } from './tasks/task.entity';
-import { UserController } from './users/user.controller';
+import { UsersController } from './users/users.controller';
 import { User } from './users/user.entity';
+import { TasksController } from './tasks/tasks.controller';
 
 export const entities = [User, Task];
-export const controllers = [UserController];
+export const controllers = [UsersController, TasksController];
