@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { signUpSchema, type SignUpSchema } from '$lib/schemas';
+	import { createUserSchema, type CreateUserSchema } from '$remult/users/dto/create-user.input';
 	import * as Alert from '$shadcn/components/ui/alert';
 	import * as Form from '$shadcn/components/ui/form';
 	import { signIn } from '@auth/sveltekit/client';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
 	import { ExclamationTriangle } from 'radix-icons-svelte';
 
-	export let form: SuperValidated<SignUpSchema>;
+	export let form: SuperValidated<CreateUserSchema>;
 
 	let loading = false;
 	let message = '';
@@ -39,7 +39,7 @@
 	<br />
 {/if}
 
-<Form.Root method="POST" {form} schema={signUpSchema} let:config>
+<Form.Root method="POST" {form} schema={createUserSchema} let:config>
 	<form method="POST" use:enhance={handleSubmit}>
 		<Form.Field {config} name="username">
 			<Form.Item>

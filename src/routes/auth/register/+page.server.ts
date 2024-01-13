@@ -1,4 +1,4 @@
-import { signUpSchema } from '$lib/schemas';
+import { createUserSchema } from '$remult/users/dto/create-user.input';
 import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -9,13 +9,13 @@ export const load: PageServerLoad = async ({ parent }) => {
 	if (session) throw redirect(303, '/');
 
 	return {
-		form: await superValidate(signUpSchema)
+		form: await superValidate(createUserSchema)
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, signUpSchema);
+		const form = await superValidate(event, createUserSchema);
 		if (!form.valid) {
 			return fail(400, {
 				form

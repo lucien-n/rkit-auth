@@ -1,7 +1,7 @@
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
-import { createUserSchema, type CreateUserSchema } from './dto/create-user.input';
+import { createUserSchema, type CreateUserInput } from './dto/create-user.input';
 import { User } from './user.entity';
 
 @Controller('UsersController')
@@ -24,7 +24,7 @@ export class UsersController {
 	}
 
 	@BackendMethod({ allowed: true })
-	static async create(createUserInput: CreateUserSchema) {
+	static async create(createUserInput: CreateUserInput) {
 		const { username, email, password } = createUserSchema.parse(createUserInput);
 
 		const error = await this.exists({ username, email });
