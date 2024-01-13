@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export class ForbiddenError extends Error {
 	constructor(message: string = 'Access to this resource is forbidden') {
 		super(message);
@@ -16,3 +18,9 @@ export const getZStringErrors = (field: string) => ({
 	required_error: `${capitalizeFirst(field)} is required`,
 	invalid_type_error: `${capitalizeFirst(field)} must be a string`
 });
+
+export const getZString = (field: string, { min, max }: { min: number; max: number }) =>
+	z
+		.string(getZStringErrors(field))
+		.min(min, getZLengthError(min, field, 'min'))
+		.max(max, getZLengthError(max, field, 'max'));
