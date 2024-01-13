@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { taskSchema, type TaskSchema } from '$lib/schemas';
-	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { Plus } from 'radix-icons-svelte';
-	import { enhance } from '$app/forms';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
 	export let form: SuperValidated<TaskSchema>;
 
@@ -28,6 +28,6 @@
 			</Form.Item>
 		</Form.Field>
 		<br />
-		<Form.Button class="aspect-square p-0"><Plus /></Form.Button>
+		<Form.Button class="aspect-square p-0" disabled={loading}><Plus /></Form.Button>
 	</form>
 </Form.Root>
