@@ -2,26 +2,22 @@
 	import { enhance } from '$app/forms';
 	import { signInSchema, type SignInSchema } from '$lib/schemas';
 	import * as Form from '$shadcn/components/ui/form';
-	import { signIn } from '@auth/sveltekit/client';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
+	import { createEventDispatcher } from 'svelte';
 
 	export let form: SuperValidated<SignInSchema>;
+
+	const dispatch = createEventDispatcher();
 
 	let loading = false;
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
 
-		return async ({ result }) => {
+		return async (event) => {
 			loading = false;
 
-			if (result.type === 'success') {
-				const { email, password } = result.data.form.data;
-				signIn('credentials', {
-					email,
-					password
-				});
-			}
+			dispatch(event.result.type, event);
 		};
 	};
 </script>

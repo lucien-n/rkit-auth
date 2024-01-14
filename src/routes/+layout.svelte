@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Button } from '$shadcn/components/ui/button';
 	import { signOut } from '@auth/sveltekit/client';
+	import { ModeWatcher } from 'mode-watcher';
+	import { Toaster } from 'svelte-sonner';
 	import '../app.pcss';
 	import type { LayoutData } from './$types';
 
@@ -8,6 +10,9 @@
 
 	$: ({ user } = data);
 </script>
+
+<Toaster richColors />
+<ModeWatcher />
 
 <nav>
 	{#if user}

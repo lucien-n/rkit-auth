@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SigninForm from '$components/auth/signin-form.svelte';
 	import FormLayout from '$components/layouts/form-layout.svelte';
+	import { onFormFailure } from '$lib/helpers';
 	import { Button } from '$shadcn/components/ui/button';
 	import { QuestionMarkCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
@@ -16,7 +17,7 @@
 		>
 	</p>
 
-	<SigninForm form={data.form} />
+	<SigninForm form={data.form} on:failure={onFormFailure} />
 
 	<div slot="footer" class="w-full text-center">
 		<Button variant="link" href="/auth/forgot-password" class="flex gap-2">

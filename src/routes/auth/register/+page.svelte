@@ -1,7 +1,9 @@
 <script lang="ts">
 	import SignupForm from '$components/auth/signup-form.svelte';
 	import FormLayout from '$components/layouts/form-layout.svelte';
+	import { onFormFailure } from '$lib/helpers';
 	import { Button } from '$shadcn/components/ui/button';
+	import { signIn } from '@auth/sveltekit/client';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -13,5 +15,14 @@
 		Already have an account? <Button variant="link" href="/auth/login" class="p-0">Sign In</Button>
 	</p>
 
-	<SignupForm form={data.form} />
+	<SignupForm
+		form={data.form}
+		on:success={async (event) => {
+			signIn('credentials', {
+				email: event.detail.formData.get('email'),
+				password: event.detail.formData.get('password')
+			});
+		}}
+		on:failure={onFormFailure}
+	/>
 </FormLayout>

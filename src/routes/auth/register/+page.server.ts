@@ -1,7 +1,7 @@
 import { createUserSchema } from '$remult/users/inputs/create-user.input';
 import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent }) => {
@@ -32,7 +32,7 @@ export const actions: Actions = {
 			});
 		} catch (e) {
 			console.warn(e);
-			return fail(401, { form, message: e });
+			return message(form, e, { status: 401 });
 		}
 
 		return {

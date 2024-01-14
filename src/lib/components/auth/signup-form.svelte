@@ -1,43 +1,24 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { createUserSchema, type CreateUserSchema } from '$remult/users/inputs/create-user.input';
-	import * as Alert from '$shadcn/components/ui/alert';
 	import * as Form from '$shadcn/components/ui/form';
-	import { signIn } from '@auth/sveltekit/client';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
-	import { ExclamationTriangle } from 'radix-icons-svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let form: SuperValidated<CreateUserSchema>;
 
 	let loading = false;
-	let message = '';
+	const dispatch = createEventDispatcher();
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
-		return async ({ result }) => {
+		return async (event) => {
 			loading = false;
 
-			message = result.data.message;
-
-			if (result.type === 'success') {
-				const { email, password } = form.data;
-				signIn('credentials', {
-					email,
-					password
-				});
-			}
+			dispatch(event.result.type, event);
 		};
 	};
 </script>
-
-{#if message}
-	<Alert.Root variant="destructive">
-		<ExclamationTriangle class="h-4 w-4" />
-		<Alert.Title>Error during creation</Alert.Title>
-		<Alert.Description>{message}</Alert.Description>
-	</Alert.Root>
-	<br />
-{/if}
 
 <Form.Root method="POST" {form} schema={createUserSchema} let:config>
 	<form method="POST" use:enhance={handleSubmit}>
@@ -45,7 +26,7 @@
 			<Form.Item>
 				<Form.Label>Username</Form.Label>
 				<Form.Validation />
-				<Form.Input type="text" placeholder="John Doe" autocomplete="username" required />
+				<Form.Input type="text" placeholder="John Doe" autocomplete="nickname" required />
 			</Form.Item>
 		</Form.Field>
 		<br />
@@ -53,7 +34,7 @@
 			<Form.Item>
 				<Form.Label>Email</Form.Label>
 				<Form.Validation />
-				<Form.Input type="email" placeholder="john.doe@mail.com" autocomplete="email" required />
+				<Form.Input type="email" placeholder="john.doe@mail.com" autocomplete="username" required />
 			</Form.Item>
 		</Form.Field>
 		<br />
