@@ -30,3 +30,8 @@ export const debug = (message: string, ...args: unknown[]) => {
 	if (process.env.NODE_ENV !== 'PRODUCTION' || parseInt(PUBLIC_DEBUG ?? '0') > 0)
 		console.log(message, ...args);
 };
+
+export const validateWithRules = (field: string, { min, max }: { min: number; max: number }) => {
+	if (field.length < min) throw getZLengthError(min, field, 'min');
+	if (field.length > max) throw getZLengthError(max, field, 'max');
+};
