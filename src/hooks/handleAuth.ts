@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PRIVATE_AUTH_SECRET } from '$env/static/private';
 import { authorize } from '$lib/server/auth';
-import type { Credentials as TCredentials } from '$lib/types';
 import { UsersController } from '$remult/users/users.controller';
-import { SvelteKitAuth } from '@auth/sveltekit';
-import Credentials from '@auth/sveltekit/providers/credentials';
+import { SvelteKitAuth, type SvelteKitAuthConfig } from '@auth/sveltekit';
+import CredentialsProvider from '@auth/sveltekit/providers/credentials';
 import type { Handle } from '@sveltejs/kit';
 
 export const handleAuth = SvelteKitAuth(async () => {
 	const authOptions = {
 		providers: [
-			Credentials({
+			CredentialsProvider({
 				type: 'credentials',
-				authorize: async (credentials, request) =>
-					await authorize(credentials as TCredentials, request)
+				credentials: {
+					email: { label: 'Email', type: 'email', placeholder: 'john.doe@mail.com' },
+					password: { label: 'Password', type: 'password', placeholder: '●●●●●●●●' }
+				},
+				authorize
 			})
 		],
 		callbacks: {
@@ -33,10 +35,14 @@ export const handleAuth = SvelteKitAuth(async () => {
 				return session;
 			}
 		},
+		pages: {
+			signIn: '/auth/login',
+			newUser: '/auth/register'
+		},
 		secret: PRIVATE_AUTH_SECRET,
 		trustHost: true,
 		debug: true
-	};
+	} satisfies SvelteKitAuthConfig;
 
 	return authOptions;
 }) satisfies Handle;
