@@ -5,7 +5,6 @@ export const handleAuth = (({ event, resolve }) => {
 	event.locals.getSession = async () => {
 		const sessionId = event.cookies.get('session');
 		if (!sessionId) {
-			console.log('no session id');
 			return null;
 		}
 

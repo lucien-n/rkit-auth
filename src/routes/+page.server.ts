@@ -34,8 +34,6 @@ export const actions: Actions = {
 
 		const task = await TasksController.create({ title });
 
-		console.log(task);
-
 		return {
 			form,
 			task
