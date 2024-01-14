@@ -14,7 +14,7 @@ export class SessionsController {
 
 	@BackendMethod({ allowed: true })
 	static async get(id: string) {
-		const session = await remult.repo(Session).findFirst({ id }, { include: { user: true } });
+		let session = await remult.repo(Session).findFirst({ id }, { include: { user: true } });
 		if (!session) {
 			if (!remult.user) return null;
 
@@ -26,7 +26,10 @@ export class SessionsController {
 			new Date().getUTCMilliseconds() < (session.createdAt?.getUTCMilliseconds() ?? 0) + MAX_AGE;
 		if (!isValid) {
 			await remult.repo(Session).delete(session.id);
-			return null;
+
+			if (!remult.user) return null;
+			const user = await remult.repo(User).findFirst({ id: remult.user.id });
+			session = await this.create(user);
 		}
 
 		return {
