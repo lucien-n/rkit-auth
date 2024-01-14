@@ -1,3 +1,4 @@
+import { PUBLIC_DEBUG } from '$env/static/public';
 import { z } from 'zod';
 
 export class ForbiddenError extends Error {
@@ -24,3 +25,8 @@ export const getZString = (field: string, { min, max }: { min: number; max: numb
 		.string(getZStringErrors(field))
 		.min(min, getZLengthError(min, field, 'min'))
 		.max(max, getZLengthError(max, field, 'max'));
+
+export const debug = (message: string, ...args: unknown[]) => {
+	if (process.env.NODE_ENV !== 'PRODUCTION' || parseInt(PUBLIC_DEBUG ?? '0') > 0)
+		console.log(message, ...args);
+};

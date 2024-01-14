@@ -1,3 +1,4 @@
+import { MAX_AGE } from '$remult/sessions/session.rules';
 import { loginUserSchema } from '$remult/users/inputs/login-user.input';
 import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
@@ -28,7 +29,13 @@ export const actions: Actions = {
 			const { session } = await UsersController.login({ email, password });
 
 			if (session) {
-				event.cookies.set('session', session.id, { path: '/' });
+				event.cookies.set('session', session.id, {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'strict',
+					secure: process.env.NODE_ENV === 'production',
+					maxAge: MAX_AGE
+				});
 			}
 		} catch (e) {
 			console.warn(e);

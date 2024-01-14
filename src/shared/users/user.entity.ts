@@ -1,3 +1,4 @@
+import { Role } from '$remult/roles';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { Entity, Fields, Relations } from 'remult';
 
@@ -13,6 +14,9 @@ export class User {
 		}
 	})
 	username!: string;
+
+	@Fields.object()
+	role: Role = Role.User;
 
 	@Fields.createdAt()
 	createdAt?: Date;

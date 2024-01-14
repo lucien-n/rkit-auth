@@ -7,10 +7,10 @@ export class Session {
 	id!: string;
 
 	@Fields.createdAt()
-	createdAt!: Date;
+	createdAt?: Date;
 
 	@Fields.updatedAt()
-	updatedAt!: Date;
+	updatedAt?: Date;
 
 	@Fields.string()
 	userId: string = '';

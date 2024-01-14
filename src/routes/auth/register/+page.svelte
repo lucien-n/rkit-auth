@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import SignupForm from '$components/auth/signup-form.svelte';
 	import FormLayout from '$components/layouts/form-layout.svelte';
 	import { onFormFailure } from '$lib/helpers';
@@ -14,5 +15,9 @@
 		Already have an account? <Button variant="link" href="/auth/login" class="p-0">Sign In</Button>
 	</p>
 
-	<SignupForm form={data.form} on:success={() => ({})} on:failure={onFormFailure} />
+	<SignupForm
+		form={data.form}
+		on:success={() => goto('/', { invalidateAll: true })}
+		on:failure={onFormFailure}
+	/>
 </FormLayout>

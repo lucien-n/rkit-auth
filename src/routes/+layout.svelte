@@ -15,7 +15,9 @@
 
 <nav>
 	{#if user}
-		<Button href="/auth/logout">Sign Out</Button>
+		<form action="/auth/logout" method="POST">
+			<Button type="submit">Sign Out</Button>
+		</form>
 	{:else}
 		<Button href="/auth/login">Login</Button>
 		<Button href="/auth/register">Register</Button>

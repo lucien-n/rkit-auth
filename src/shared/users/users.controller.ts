@@ -1,4 +1,5 @@
 import { AuthError } from '$lib/types';
+import { debug } from '$remult/helpers';
 import { Session } from '$remult/sessions/session.entity';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
@@ -55,21 +56,25 @@ export class UsersController {
 	@BackendMethod({ allowed: true })
 	static async login(loginUserInput: LoginUserInput) {
 		const { email, password } = loginUserSchema.parse(loginUserInput);
+		debug(`Loging in '${email}' <email, password>`, email, password);
 
 		const user = await UsersController.findByEmail(email, { credentials: true });
 		if (!user) throw AuthError.UserNotFound;
+		debug(`Loging in '${email}' <user>`, user);
 
 		if (!bcrypt.compareSync(password, user?.credentials?.passwordHash ?? ''))
 			throw AuthError.InvalidCredentials;
 
 		const session = await SessionsController.create(user);
+		debug(`Loging in '${email}' <session>`, session);
 
 		return { user, session };
 	}
 
-	@BackendMethod({allowed: true}) // CHECK IF ALLOWED CAN BE FALSE AND IT'S IMPACT
+	@BackendMethod({ allowed: true }) // CHECK IF ALLOWED CAN BE FALSE AND IT'S IMPACT
 	static async logout(sessionId: string) {
-		return remult.repo(Session).delete(sessionId)
+		debug('Logged out', sessionId);
+		return remult.repo(Session).delete(sessionId);
 	}
 
 	@BackendMethod({ allowed: true })

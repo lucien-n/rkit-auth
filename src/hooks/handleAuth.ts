@@ -4,7 +4,10 @@ import type { Handle } from '@sveltejs/kit';
 export const handleAuth = (({ event, resolve }) => {
 	event.locals.getSession = async () => {
 		const sessionId = event.cookies.get('session');
-		if (!sessionId) return null;
+		if (!sessionId) {
+			console.log('no session id');
+			return null;
+		}
 
 		return SessionsController.get(sessionId);
 	};

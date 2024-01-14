@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import SigninForm from '$components/auth/signin-form.svelte';
 	import FormLayout from '$components/layouts/form-layout.svelte';
 	import { onFormFailure } from '$lib/helpers';
@@ -17,7 +18,11 @@
 		>
 	</p>
 
-	<SigninForm form={data.form} on:success={() => ({})} on:failure={onFormFailure} />
+	<SigninForm
+		form={data.form}
+		on:success={() => goto('/', { invalidateAll: true })}
+		on:failure={onFormFailure}
+	/>
 
 	<div slot="footer" class="w-full text-center">
 		<Button variant="link" href="/auth/forgot-password" class="flex gap-2">
