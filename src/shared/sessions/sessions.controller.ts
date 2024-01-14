@@ -7,12 +7,12 @@ import { MAX_AGE } from './session.rules';
 export class SessionsController {
 	constructor() {}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async findById(id: string) {
 		return remult.repo(Session).findFirst({ id });
 	}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async get(id: string) {
 		const user = remult.user ? await remult.repo(User).findFirst({ id: remult.user.id }) : null;
 
@@ -38,7 +38,7 @@ export class SessionsController {
 		};
 	}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async create(user: User) {
 		const session = await remult.repo(Session).insert({ user });
 

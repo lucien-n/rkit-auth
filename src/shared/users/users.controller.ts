@@ -13,7 +13,7 @@ import { User } from './user.entity';
 export class UsersController {
 	constructor() {}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async findByEmail(email: string, include?: MembersToInclude<UsersController>) {
 		const credentials = await remult
 			.repo(UserCredentials)
@@ -23,12 +23,12 @@ export class UsersController {
 		return remult.repo(User).findFirst({ id: credentials.user?.id }, { include });
 	}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async findById(id: string) {
 		return remult.repo(User).findFirst({ id });
 	}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async register(createUserInput: RegisterUserInput) {
 		const { username, email, password } = registerUserSchema.parse(createUserInput);
 
@@ -53,7 +53,7 @@ export class UsersController {
 		return { user, session };
 	}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async login(loginUserInput: LoginUserInput) {
 		const { email, password } = loginUserSchema.parse(loginUserInput);
 		debug(`Loging in '${email}' <email, password>`, email, password);
@@ -71,13 +71,13 @@ export class UsersController {
 		return { user, session };
 	}
 
-	@BackendMethod({ allowed: true }) // CHECK IF ALLOWED CAN BE FALSE AND IT'S IMPACT
+	@BackendMethod({ allowed: false }) // CHECK IF ALLOWED CAN BE FALSE AND IT'S IMPACT
 	static async logout(sessionId: string) {
 		debug('Logged out', sessionId);
 		return remult.repo(Session).delete(sessionId);
 	}
 
-	@BackendMethod({ allowed: true })
+	@BackendMethod({ allowed: false })
 	static async exists({ username, email }: { username: string; email: string }) {
 		for await (const existingUser of remult.repo(User).query({
 			include: { credentials: true }
