@@ -37,11 +37,10 @@ export class SessionsController {
 
 	@BackendMethod({ allowed: true })
 	static async create(user: User) {
-		for await (const userSession of remult.repo(Session).query({ where: { userId: user.id } })) {
-			await remult.repo(Session).delete(userSession.id);
-		}
-
 		const session = await remult.repo(Session).insert({ user });
+
+		for await (const userSession of remult.repo(Session).query({ where: { userId: user.id } }))
+			if (userSession.id !== session.id) await remult.repo(Session).delete(userSession.id);
 
 		return session;
 	}
