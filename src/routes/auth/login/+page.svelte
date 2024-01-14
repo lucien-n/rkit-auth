@@ -3,7 +3,6 @@
 	import FormLayout from '$components/layouts/form-layout.svelte';
 	import { onFormFailure } from '$lib/helpers';
 	import { Button } from '$shadcn/components/ui/button';
-	import { signIn } from '@auth/sveltekit/client';
 	import { QuestionMarkCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
 
@@ -18,16 +17,7 @@
 		>
 	</p>
 
-	<SigninForm
-		form={data.form}
-		on:success={(event) => {
-			signIn({
-				email: event.detail.formData.get('email'),
-				password: event.detail.formData.get('password')
-			});
-		}}
-		on:failure={onFormFailure}
-	/>
+	<SigninForm form={data.form} on:success={() => ({})} on:failure={onFormFailure} />
 
 	<div slot="footer" class="w-full text-center">
 		<Button variant="link" href="/auth/forgot-password" class="flex gap-2">

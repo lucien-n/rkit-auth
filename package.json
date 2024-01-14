@@ -40,7 +40,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@auth/sveltekit": "^0.5.2",
 		"@internationalized/date": "^3.5.1",
 		"bcrypt": "^5.1.1",
 		"bits-ui": "^0.14.0",
