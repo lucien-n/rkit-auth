@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { signInSchema, type SignInSchema } from '$lib/schemas';
+	import { loginUserSchema, type LoginUserSchema } from '$remult/users/inputs/login-user.input';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
 	import { createEventDispatcher } from 'svelte';
 
-	export let form: SuperValidated<SignInSchema>;
+	export let form: SuperValidated<LoginUserSchema>;
 
 	const dispatch = createEventDispatcher();
 
@@ -22,7 +22,7 @@
 	};
 </script>
 
-<Form.Root method="POST" {form} schema={signInSchema} let:config>
+<Form.Root method="POST" {form} schema={loginUserSchema} let:config>
 	<form method="POST" use:enhance={handleSubmit}>
 		<Form.Field {config} name="email">
 			<Form.Item>

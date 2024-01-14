@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button } from '$shadcn/components/ui/button';
-	import { signOut } from '@auth/sveltekit/client';
 	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from 'svelte-sonner';
 	import '../app.pcss';
@@ -16,7 +15,7 @@
 
 <nav>
 	{#if user}
-		<Button on:click={signOut}>Sign Out</Button>
+		<Button href="/auth/logout">Sign Out</Button>
 	{:else}
 		<Button href="/auth/login">Login</Button>
 		<Button href="/auth/register">Register</Button>

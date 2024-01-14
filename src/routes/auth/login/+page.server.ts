@@ -1,6 +1,7 @@
-import { signInSchema } from '$lib/schemas';
+import { loginUserSchema } from '$remult/users/inputs/login-user.input';
+import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent }) => {
@@ -8,17 +9,30 @@ export const load: PageServerLoad = async ({ parent }) => {
 	if (session) throw redirect(303, '/');
 
 	return {
-		form: await superValidate(signInSchema)
+		form: await superValidate(loginUserSchema)
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, signInSchema);
+		const form = await superValidate(event, loginUserSchema);
 		if (!form.valid) {
 			return fail(400, {
 				form
 			});
+		}
+
+		const { email, password } = form.data;
+
+		try {
+			const { session } = await UsersController.login({ email, password });
+
+			if (session) {
+				event.cookies.set('session', session.id, { path: '/' });
+			}
+		} catch (e) {
+			console.warn(e);
+			return message(form, e, { status: 500 });
 		}
 
 		return {

@@ -1,10 +1,10 @@
-// See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
+import { Session } from '$remult/sessions/session.entity';
+
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			getSession: () => Session
+			getSession: () => Promise<Session | null>;
 		}
 		// interface PageData {}
 		// interface PageState {}

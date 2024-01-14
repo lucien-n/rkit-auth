@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { createUserSchema, type CreateUserSchema } from '$remult/users/inputs/create-user.input';
+	import {
+		registerUserSchema,
+		type RegisterUserSchema
+	} from '$remult/users/inputs/register-user.input';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
 	import { createEventDispatcher } from 'svelte';
 
-	export let form: SuperValidated<CreateUserSchema>;
+	export let form: SuperValidated<RegisterUserSchema>;
 
 	let loading = false;
 	const dispatch = createEventDispatcher();
@@ -20,7 +23,7 @@
 	};
 </script>
 
-<Form.Root method="POST" {form} schema={createUserSchema} let:config>
+<Form.Root method="POST" {form} schema={registerUserSchema} let:config>
 	<form method="POST" use:enhance={handleSubmit}>
 		<Form.Field {config} name="username">
 			<Form.Item>
