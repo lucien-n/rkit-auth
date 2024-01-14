@@ -14,11 +14,12 @@ export class SessionsController {
 
 	@BackendMethod({ allowed: true })
 	static async get(id: string) {
+		const user = remult.user ? await remult.repo(User).findFirst({ id: remult.user.id }) : null;
+
 		let session = await remult.repo(Session).findFirst({ id }, { include: { user: true } });
 		if (!session) {
 			if (!remult.user) return null;
 
-			const user = await remult.repo(User).findFirst({ id: remult.user.id });
 			if (user) return this.create(user);
 		}
 
@@ -27,8 +28,7 @@ export class SessionsController {
 		if (!isValid) {
 			await remult.repo(Session).delete(session.id);
 
-			if (!remult.user) return null;
-			const user = await remult.repo(User).findFirst({ id: remult.user.id });
+			if (!user) return null;
 			session = await this.create(user);
 		}
 
