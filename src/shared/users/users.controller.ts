@@ -1,4 +1,4 @@
-import { AuthError } from '$lib/types';
+import { AuthError } from '$remult/errors';
 import { Session } from '$remult/sessions/session.entity';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
@@ -77,8 +77,8 @@ export class UsersController {
 		for await (const existingUser of remult.repo(User).query({
 			include: { credentials: true }
 		})) {
-			if (username === existingUser.username) return 'Username already taken';
-			if (email === existingUser.credentials?.email) return 'Email already used';
+			if (username === existingUser.username) return AuthError.UsernameTaken;
+			if (email === existingUser.credentials?.email) return AuthError.EmailAlreadyUsed;
 		}
 
 		return false;
