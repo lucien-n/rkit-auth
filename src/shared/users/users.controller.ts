@@ -67,7 +67,7 @@ export class UsersController {
 		return { user, session };
 	}
 
-	@BackendMethod({ allowed: false }) // CHECK IF ALLOWED CAN BE FALSE AND IT'S IMPACT
+	@BackendMethod({ allowed: false })
 	static async logout(sessionId: string) {
 		return remult.repo(Session).delete(sessionId);
 	}
