@@ -1,3 +1,5 @@
+import { authErrorMessages, isInEnum } from '$lib/helpers';
+import { AuthError } from '$remult/errors';
 import { registerUserSchema } from '$remult/users/inputs/register-user.input';
 import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
@@ -31,9 +33,10 @@ export const actions: Actions = {
 				password
 			});
 			event.cookies.set('session', session.id, { path: '/' });
-		} catch (e) {
-			console.warn(e);
-			return message(form, e, { status: 401 });
+		} catch (error) {
+			let msg = 'Internal server error';
+			if (isInEnum(error, AuthError)) msg = authErrorMessages[error as AuthError];
+			return message(form, msg, { status: 401 });
 		}
 
 		return {
