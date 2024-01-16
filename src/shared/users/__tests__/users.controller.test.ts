@@ -1,7 +1,9 @@
 import { AuthError } from '$remult/errors';
+import { SessionsController } from '$remult/sessions/sessions.controller';
 import { InMemoryDataProvider, remult } from 'remult';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ZodError } from 'zod';
+import { mUserBaseA } from '../__fixtures__/user.entity.fixtures';
 import { UsersController } from '../users.controller';
 
 describe('UsersController', () => {
@@ -47,7 +49,42 @@ describe('UsersController', () => {
 			);
 		});
 
-		it('should register user');
+		it('should register user', async () => {
+			vi.spyOn(SessionsController, 'create').mockReturnValueOnce(
+				new Promise((r) =>
+					r({
+						id: 'y2x7avfak9g8qxp07bzl3end',
+						token:
+							'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkdngzd243ZjFzOXI4ajB1MXJqZWVyNXMiLCJyb2xlcyI6WyJVc2VyIl0sInVzZXJuYW1lIjoiVXNlcm5hbWUiLCJjcmVhdGVkQXQiOiIyMDI0LTAxLTE2VDE3OjQ1OjUzLjg5OVoiLCJpYXQiOjE3MDU0MjcxNTMsImV4cCI6MTcwNTUxMzU1M30.f4k5yI4D7FHKyWqkFmtjJ0AFDYV5Oj_pC7CcKRZmjT8',
+						createdAt: new Date('2024-01-16'),
+						updatedAt: new Date('2024-01-16'),
+						userId: 'dvx3wn7f1s9r8j0u1rjeer5s',
+						user: mUserBaseA
+					})
+				)
+			);
+
+			const { session, user } = await UsersController.register({
+				username: 'SlimShady313',
+				email: 'shady313@mail.com',
+				password: 'verySecurePassword'
+			});
+
+			user.id = mUserBaseA.id;
+			user.createdAt = new Date('2024-01-16');
+			user.updatedAt = new Date('2024-01-16');
+
+			expect(session).toEqual({
+				id: 'y2x7avfak9g8qxp07bzl3end',
+				token:
+					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkdngzd243ZjFzOXI4ajB1MXJqZWVyNXMiLCJyb2xlcyI6WyJVc2VyIl0sInVzZXJuYW1lIjoiVXNlcm5hbWUiLCJjcmVhdGVkQXQiOiIyMDI0LTAxLTE2VDE3OjQ1OjUzLjg5OVoiLCJpYXQiOjE3MDU0MjcxNTMsImV4cCI6MTcwNTUxMzU1M30.f4k5yI4D7FHKyWqkFmtjJ0AFDYV5Oj_pC7CcKRZmjT8',
+				userId: 'dvx3wn7f1s9r8j0u1rjeer5s',
+				createdAt: new Date('2024-01-16'),
+				updatedAt: new Date('2024-01-16'),
+				user: mUserBaseA
+			});
+			expect(user).toEqual({ ...mUserBaseA, credentials: null });
+		});
 	});
 
 	describe('login', () => {
