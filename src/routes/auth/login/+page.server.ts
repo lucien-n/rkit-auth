@@ -1,5 +1,5 @@
 import { getMessageFromError } from '$lib/helpers';
-import { MAX_AGE } from '$remult/sessions/session.rules';
+import { MAX_AGE_MIN } from '$remult/sessions/session.rules';
 import { loginUserSchema } from '$remult/users/inputs/login-user.input';
 import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
@@ -35,7 +35,7 @@ export const actions: Actions = {
 					httpOnly: true,
 					sameSite: 'strict',
 					secure: process.env.NODE_ENV === 'production',
-					maxAge: MAX_AGE
+					maxAge: MAX_AGE_MIN * 60
 				});
 			}
 		} catch (e) {

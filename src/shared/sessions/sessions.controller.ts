@@ -1,10 +1,10 @@
 import { PRIVATE_AUTH_SECRET } from '$env/static/private';
 import { formatUserSession } from '$remult/helpers';
 import { User } from '$remult/users/user.entity';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { BackendMethod, Controller, remult } from 'remult';
 import { Session } from './session.entity';
-import { MAX_AGE as MAX_AGE_MINUTES } from './session.rules';
+import { MAX_AGE_HOURS } from './session.rules';
 
 @Controller('SessionsController')
 export class SessionsController {
@@ -48,12 +48,15 @@ export class SessionsController {
 		return session;
 	}
 
-	private static generateToken(user: User): string {
+	private static generateToken(user: User) {
 		const payload = {
-			userId: user.id
+			userId: user.id,
+			roles: user.roles,
+			username: user.username,
+			createdAt: new Date()
 		};
 
-		return jwt.sign(payload, PRIVATE_AUTH_SECRET, { expiresIn: `${MAX_AGE_MINUTES}min` });
+		return jwt.sign(payload, PRIVATE_AUTH_SECRET, { expiresIn: `${MAX_AGE_HOURS}h` });
 	}
 
 	private static verifyToken(token: string): boolean {
