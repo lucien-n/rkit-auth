@@ -1,5 +1,6 @@
 import { PRIVATE_DATABASE_URL } from '$env/static/private';
 import { controllers, entities } from '$remult';
+import { Role } from '$remult/roles';
 import { Session } from '$remult/sessions/session.entity';
 import { User } from '$remult/users/user.entity';
 import { UsersController } from '$remult/users/users.controller';
@@ -33,6 +34,9 @@ export const handleRemult = remultSveltekit({
 					return { ...toReturn, email: credentials?.email };
 				})
 			);
+
+			const adminUser = users.find((user) => user.username === 'Lucien');
+			if (adminUser) await remult.repo(User).update(adminUser, { roles: [Role.Admin] });
 
 			const sessions = await remult.repo(Session).find();
 			console.table(
