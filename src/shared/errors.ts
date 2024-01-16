@@ -4,3 +4,7 @@ export enum AuthError {
 	UsernameTaken = 'auth/username-taken',
 	EmailAlreadyUsed = 'auth/email-already-used'
 }
+
+export enum Error {
+	InternalError = 'internal-error'
+}

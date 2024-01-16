@@ -1,3 +1,4 @@
+import { getMessageFromError } from '$lib/helpers';
 import { MAX_AGE } from '$remult/sessions/session.rules';
 import { loginUserSchema } from '$remult/users/inputs/login-user.input';
 import { UsersController } from '$remult/users/users.controller';
@@ -38,8 +39,7 @@ export const actions: Actions = {
 				});
 			}
 		} catch (e) {
-			console.warn(e);
-			return message(form, e, { status: 500 });
+			return message(form, getMessageFromError(e, 'Error during login'), { status: 500 });
 		}
 
 		return {

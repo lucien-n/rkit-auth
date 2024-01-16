@@ -1,4 +1,4 @@
-import { AuthError } from '$remult/errors';
+import { AuthError, Error } from '$remult/errors';
 import { toast } from 'svelte-sonner';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,5 +13,18 @@ export const authErrorMessages = {
 	[AuthError.InvalidCredentials]: 'Invalid credentials'
 };
 
+export const errorMessages = {
+	[Error.InternalError]: 'Internal error',
+	...authErrorMessages
+};
+
 export const isInEnum = (value: unknown, enu: Record<string, unknown>) =>
 	Object.values(enu).includes(value);
+
+export const getMessageFromError = (error: unknown, fallbackMessage = 'Error') => {
+	if (typeof error !== 'string') return fallbackMessage;
+
+	return Object.keys(errorMessages).includes(error)
+		? errorMessages[error as keyof typeof errorMessages]
+		: fallbackMessage;
+};
