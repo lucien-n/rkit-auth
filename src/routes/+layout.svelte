@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ROUTES } from '$lib/routes';
 	import { Button } from '$shadcn/components/ui/button';
 	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from 'svelte-sonner';
@@ -15,12 +16,13 @@
 
 <nav>
 	{#if user}
-		<form action="/auth/logout" method="POST">
+		<form action={ROUTES.auth.logout} method="POST">
 			<Button type="submit">Sign Out</Button>
+			<Button href={ROUTES.admin.root}>Admin</Button>
 		</form>
 	{:else}
-		<Button href="/auth/login">Login</Button>
-		<Button href="/auth/register">Register</Button>
+		<Button href={ROUTES.auth.login}>Login</Button>
+		<Button href={ROUTES.auth.register}>Register</Button>
 	{/if}
 </nav>
 

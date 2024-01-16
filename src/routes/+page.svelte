@@ -9,6 +9,8 @@
 
 	export let data: PageData;
 
+	$: ({ user } = data);
+
 	let tasks: TaskEntity[] = [];
 	let unSub: (() => void) | null = null;
 
@@ -29,9 +31,17 @@
 <div class="font-mono">
 	<div class="my-12 text-center">
 		<h1 class="text-5xl tracking-tight">
-			Welcome, <strong>{data.user?.name}</strong>
+			Welcome, <strong>{user?.name}</strong>
 		</h1>
-		<p class="text-muted-foreground">{data.user?.id}</p>
+		<div class="flex justify-center gap-2">
+			<p class="text-muted-foreground">{user?.id}</p>
+			-
+			<p class="text-muted-foreground">
+				{#each user.roles as role}
+					{role}
+				{/each}
+			</p>
+		</div>
 	</div>
 	<main class="container">
 		<TaskForm form={data.form} />
