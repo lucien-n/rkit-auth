@@ -1,1 +1,1 @@
-export const MAX_AGE = 3600 * 24;
+export const MAX_AGE = 60 * 24;

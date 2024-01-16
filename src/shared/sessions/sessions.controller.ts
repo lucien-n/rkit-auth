@@ -2,7 +2,7 @@ import { formatUserSession } from '$remult/helpers';
 import { User } from '$remult/users/user.entity';
 import { BackendMethod, Controller, remult } from 'remult';
 import { Session } from './session.entity';
-import { MAX_AGE } from './session.rules';
+import { MAX_AGE as MAX_AGE_MINUTES } from './session.rules';
 
 @Controller('SessionsController')
 export class SessionsController {
@@ -24,8 +24,7 @@ export class SessionsController {
 			if (user) session = await this.create(user);
 		}
 
-		const isValid =
-			new Date().getUTCMilliseconds() < (session.createdAt?.getUTCMilliseconds() ?? 0) + MAX_AGE;
+		const isValid = session.expiresAt && session.expiresAt > new Date();
 		if (!isValid) {
 			await remult.repo(Session).delete(session.id);
 
@@ -38,7 +37,10 @@ export class SessionsController {
 
 	@BackendMethod({ allowed: false })
 	static async create(user: User) {
-		const session = await remult.repo(Session).insert({ user });
+		const expiresAt = new Date();
+		expiresAt.setMinutes(expiresAt.getMinutes() + MAX_AGE_MINUTES);
+
+		const session = await remult.repo(Session).insert({ user, expiresAt });
 
 		for await (const userSession of remult.repo(Session).query({ where: { userId: user.id } }))
 			if (userSession.id !== session.id) await remult.repo(Session).delete(userSession.id);

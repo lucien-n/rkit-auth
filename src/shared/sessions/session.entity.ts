@@ -12,6 +12,9 @@ export class Session {
 	@Fields.updatedAt()
 	updatedAt?: Date;
 
+	@Fields.date()
+	expiresAt!: Date;
+
 	@Fields.string()
 	userId: string = '';
 
