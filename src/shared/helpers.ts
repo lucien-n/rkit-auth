@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { Session } from './sessions/session.entity';
 
 export class ForbiddenError extends Error {
 	constructor(message: string = 'Access to this resource is forbidden') {
@@ -29,3 +30,8 @@ export const validateWithRules = (field: string, { min, max }: { min: number; ma
 	if (field.length < min) throw getZLengthError(min, field, 'min');
 	if (field.length > max) throw getZLengthError(max, field, 'max');
 };
+
+export const formatUserSession = (session: Session) => ({
+	...session,
+	user: { id: session.user.id, username: session.user.username, roles: session.user.roles }
+});

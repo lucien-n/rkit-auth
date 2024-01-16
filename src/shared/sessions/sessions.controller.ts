@@ -1,3 +1,4 @@
+import { formatUserSession } from '$remult/helpers';
 import { User } from '$remult/users/user.entity';
 import { BackendMethod, Controller, remult } from 'remult';
 import { Session } from './session.entity';
@@ -20,7 +21,7 @@ export class SessionsController {
 		if (!session) {
 			if (!remult.user) return null;
 
-			if (user) return this.create(user);
+			if (user) session = await this.create(user);
 		}
 
 		const isValid =
@@ -32,10 +33,7 @@ export class SessionsController {
 			session = await this.create(user);
 		}
 
-		return {
-			...session,
-			user: { id: session.user.id, username: session.user.username, role: session.user.roles }
-		};
+		return formatUserSession(session);
 	}
 
 	@BackendMethod({ allowed: false })
