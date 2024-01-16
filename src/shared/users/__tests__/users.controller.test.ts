@@ -50,6 +50,37 @@ describe('UsersController', () => {
 		it('should register user');
 	});
 
+	describe('login', () => {
+		it('should throw error if inputs are invalid', async () => {
+			await expect(
+				UsersController.login({
+					email: 'user.mail.com',
+					password: '1234567'
+				})
+			).rejects.toThrowError(
+				new ZodError([
+					{
+						code: 'too_small',
+						minimum: 8,
+						type: 'string',
+						inclusive: true,
+						exact: false,
+						message: 'Password must be at least 8 characters long',
+						path: ['password']
+					},
+					{
+						validation: 'email',
+						code: 'invalid_string',
+						message: 'Invalid email',
+						path: ['email']
+					}
+				])
+			);
+		});
+
+		it('should loginte user');
+	});
+
 	describe('exists', () => {
 		it('should throw username taken error', async () => {
 			await UsersController.register({
