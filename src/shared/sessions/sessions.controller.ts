@@ -1,5 +1,7 @@
+import { PRIVATE_AUTH_SECRET } from '$env/static/private';
 import { formatUserSession } from '$remult/helpers';
 import { User } from '$remult/users/user.entity';
+import * as jwt from 'jsonwebtoken';
 import { BackendMethod, Controller, remult } from 'remult';
 import { Session } from './session.entity';
 import { MAX_AGE as MAX_AGE_MINUTES } from './session.rules';
@@ -24,7 +26,7 @@ export class SessionsController {
 			if (user) session = await this.create(user);
 		}
 
-		const isValid = session.expiresAt && session.expiresAt > new Date();
+		const isValid = this.verifyToken(session.token);
 		if (!isValid) {
 			await remult.repo(Session).delete(session.id);
 
@@ -37,14 +39,29 @@ export class SessionsController {
 
 	@BackendMethod({ allowed: false })
 	static async create(user: User) {
-		const expiresAt = new Date();
-		expiresAt.setMinutes(expiresAt.getMinutes() + MAX_AGE_MINUTES);
-
-		const session = await remult.repo(Session).insert({ user, expiresAt });
+		const token = this.generateToken(user);
+		const session = await remult.repo(Session).insert({ user, token });
 
 		for await (const userSession of remult.repo(Session).query({ where: { userId: user.id } }))
 			if (userSession.id !== session.id) await remult.repo(Session).delete(userSession.id);
 
 		return session;
+	}
+
+	private static generateToken(user: User): string {
+		const payload = {
+			userId: user.id
+		};
+
+		return jwt.sign(payload, PRIVATE_AUTH_SECRET, { expiresIn: `${MAX_AGE_MINUTES}min` });
+	}
+
+	private static verifyToken(token: string): boolean {
+		try {
+			jwt.verify(token, PRIVATE_AUTH_SECRET);
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 }

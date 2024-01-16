@@ -12,8 +12,8 @@ export class Session {
 	@Fields.updatedAt()
 	updatedAt?: Date;
 
-	@Fields.date()
-	expiresAt!: Date;
+	@Fields.string()
+	token: string = '';
 
 	@Fields.string()
 	userId: string = '';
