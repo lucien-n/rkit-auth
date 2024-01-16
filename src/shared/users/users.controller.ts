@@ -31,8 +31,7 @@ export class UsersController {
 	static async register(createUserInput: RegisterUserInput) {
 		const { username, email, password } = registerUserSchema.parse(createUserInput);
 
-		const error = await this.exists({ username, email });
-		if (error) throw error;
+		await this.exists({ username, email });
 
 		const salt = bcrypt.genSaltSync();
 		const passwordHash = await bcrypt.hash(password, salt);
@@ -77,10 +76,8 @@ export class UsersController {
 		for await (const existingUser of remult.repo(User).query({
 			include: { credentials: true }
 		})) {
-			if (username === existingUser.username) return AuthError.UsernameTaken;
-			if (email === existingUser.credentials?.email) return AuthError.EmailAlreadyUsed;
+			if (username === existingUser.username) throw AuthError.UsernameTaken;
+			if (email === existingUser.credentials?.email) throw AuthError.EmailAlreadyUsed;
 		}
-
-		return false;
 	}
 }
