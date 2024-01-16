@@ -11,7 +11,7 @@ export class User {
 	username!: string;
 
 	@Fields.object()
-	role: Role = Role.User;
+	roles: Role[] = [Role.User];
 
 	@Fields.createdAt()
 	createdAt?: Date;

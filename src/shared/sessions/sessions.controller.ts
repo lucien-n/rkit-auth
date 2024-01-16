@@ -34,7 +34,7 @@ export class SessionsController {
 
 		return {
 			...session,
-			user: { id: session.user.id, username: session.user.username, role: session.user.role }
+			user: { id: session.user.id, username: session.user.username, role: session.user.roles }
 		};
 	}
 

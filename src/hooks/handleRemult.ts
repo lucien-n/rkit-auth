@@ -1,6 +1,5 @@
 import { PRIVATE_DATABASE_URL } from '$env/static/private';
 import { controllers, entities } from '$remult';
-import { Role } from '$remult/roles';
 import { Session } from '$remult/sessions/session.entity';
 import { User } from '$remult/users/user.entity';
 import { UsersController } from '$remult/users/users.controller';
@@ -17,7 +16,8 @@ export const handleRemult = remultSveltekit({
 			if (user) {
 				return {
 					id: user.id,
-					name: user.username
+					name: user.username,
+					roles: user.roles
 				};
 			}
 		}
@@ -42,11 +42,6 @@ export const handleRemult = remultSveltekit({
 					return toReturn;
 				})
 			);
-
-			for await (const existingUser of remult.repo(User).query()) {
-				if (!existingUser.role)
-					await remult.repo(User).update(existingUser.id, { role: Role.User });
-			}
 		}
 	},
 	entities,
