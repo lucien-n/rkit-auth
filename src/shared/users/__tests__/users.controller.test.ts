@@ -114,8 +114,6 @@ describe('UsersController', () => {
 				])
 			);
 		});
-
-		it('should loginte user');
 	});
 
 	describe('exists', () => {
