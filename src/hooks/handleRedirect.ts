@@ -7,7 +7,7 @@ export const handleRedirect = (async ({ event, resolve }) => {
 	} = event;
 
 	const redirectTo = getRedirect(pathname);
-	if (redirectTo) throw redirect(303, redirectTo);
+	if (redirectTo) redirect(303, redirectTo);
 
 	return resolve(event);
 }) satisfies Handle;

@@ -6,5 +6,5 @@ export const load: PageServerLoad = async ({ parent, url }) => {
 	const { session } = await parent();
 
 	const roles = session?.user?.roles;
-	if (!isAccessibleBy(roles, url.pathname)) throw redirect(308, ROUTES.home);
+	if (!isAccessibleBy(roles, url.pathname)) redirect(308, ROUTES.home);
 };

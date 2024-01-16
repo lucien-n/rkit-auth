@@ -3,7 +3,7 @@ import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	throw redirect(303, '/');
+	redirect(303, '/');
 };
 
 export const actions: Actions = {
@@ -15,6 +15,6 @@ export const actions: Actions = {
 			cookies.delete('session', { path: '/' });
 		}
 
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 };

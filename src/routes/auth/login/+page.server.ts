@@ -8,7 +8,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent }) => {
 	const { session } = await parent();
-	if (session) throw redirect(303, '/');
+	if (session) redirect(303, '/');
 
 	return {
 		form: await superValidate(loginUserSchema)
