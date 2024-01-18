@@ -1,23 +1,21 @@
 <script lang="ts">
 	import { User } from '$remult/users/user.entity';
+	import { UsersController } from '$remult/users/users.controller';
 	import { Button } from '$shadcn/components/ui/button';
 	import * as Dialog from '$shadcn/components/ui/dialog';
 	import { Input } from '$shadcn/components/ui/input';
 	import { Label } from '$shadcn/components/ui/label';
-	import { repo } from 'remult';
-	import { browser } from 'svelte';
 
 	export let user: User;
 	export let open = false;
 
 	export const save = async () => {
-		if (!browser) return;
 		const {
 			id,
 			username,
 			credentials: { email }
 		} = user;
-		await repo(User).update({ id, username, credentials: { email } });
+		await UsersController.update({ id, username, email });
 		open = false;
 	};
 </script>
