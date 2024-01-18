@@ -1,7 +1,7 @@
 import { getMessageFromError } from '$lib/helpers';
+import { AuthController } from '$remult/auth/auth.controller';
 import { MAX_AGE_MIN } from '$remult/sessions/session.rules';
 import { loginUserSchema } from '$remult/users/inputs/login-user.input';
-import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
@@ -27,7 +27,7 @@ export const actions: Actions = {
 		const { email, password } = form.data;
 
 		try {
-			const { session } = await UsersController.login({ email, password });
+			const { session } = await AuthController.login({ email, password });
 
 			if (session) {
 				event.cookies.set('session', session.id, {

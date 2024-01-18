@@ -1,13 +1,8 @@
 import { AuthError } from '$remult/errors';
 import { ForbiddenError } from '$remult/helpers';
 import { Role } from '$remult/roles';
-import { Session } from '$remult/sessions/session.entity';
-import { SessionsController } from '$remult/sessions/sessions.controller';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
-import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
-import { loginUserSchema, type LoginUserInput } from './inputs/login-user.input';
-import { registerUserSchema, type RegisterUserInput } from './inputs/register-user.input';
 import type { UpdateUserInput } from './inputs/update-user.input';
 import { User } from './user.entity';
 
@@ -28,50 +23,6 @@ export class UsersController {
 	@BackendMethod({ allowed: false })
 	static async findById(id: string) {
 		return remult.repo(User).findFirst({ id });
-	}
-
-	@BackendMethod({ allowed: false })
-	static async register(createUserInput: RegisterUserInput) {
-		const { username, email, password } = registerUserSchema.parse(createUserInput);
-
-		await this.exists({ username, email });
-
-		const salt = bcrypt.genSaltSync();
-		const passwordHash = await bcrypt.hash(password, salt);
-
-		const user = await remult.repo(User).insert({ username });
-
-		const userCredentials = await remult
-			.repo(UserCredentials)
-			.insert({ email, passwordHash, user });
-
-		await remult.repo(User).update(user.id, {
-			credentials: userCredentials
-		});
-
-		const session = await SessionsController.create(user);
-
-		return { user, session };
-	}
-
-	@BackendMethod({ allowed: false })
-	static async login(loginUserInput: LoginUserInput) {
-		const { email, password } = loginUserSchema.parse(loginUserInput);
-
-		const user = await UsersController.findByEmail(email, { credentials: true });
-		if (!user) throw AuthError.UserNotFound;
-
-		if (!bcrypt.compareSync(password, user?.credentials?.passwordHash ?? ''))
-			throw AuthError.InvalidCredentials;
-
-		const session = await SessionsController.create(user);
-
-		return { user, session };
-	}
-
-	@BackendMethod({ allowed: false })
-	static async logout(sessionId: string) {
-		return remult.repo(Session).delete(sessionId);
 	}
 
 	@BackendMethod({ allowed: false })

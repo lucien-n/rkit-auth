@@ -1,6 +1,6 @@
 import { getZString, getZStringErrors as gzse } from '$remult/helpers';
 import { z } from 'zod';
-import rules from '../user.rules';
+import rules from '../../users/user.rules';
 
 export const registerUserSchema = z.object({
 	username: getZString('username', rules.username),

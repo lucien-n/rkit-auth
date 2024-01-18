@@ -1,6 +1,6 @@
 import { getMessageFromError } from '$lib/helpers';
+import { AuthController } from '$remult/auth/auth.controller';
 import { registerUserSchema } from '$remult/users/inputs/register-user.input';
-import { UsersController } from '$remult/users/users.controller';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
@@ -26,7 +26,7 @@ export const actions: Actions = {
 		const { username, email, password } = form.data;
 
 		try {
-			const { session } = await UsersController.register({
+			const { session } = await AuthController.register({
 				username,
 				email,
 				password

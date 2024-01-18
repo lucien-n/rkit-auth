@@ -1,4 +1,4 @@
-import { UsersController } from '$remult/users/users.controller';
+import { AuthController } from '$remult/auth/auth.controller';
 import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -11,7 +11,7 @@ export const actions: Actions = {
 		const session = await locals.getSession();
 
 		if (session) {
-			await UsersController.logout(session.id);
+			await AuthController.logout(session.id);
 			cookies.delete('session', { path: '/' });
 		}
 
