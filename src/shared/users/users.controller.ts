@@ -3,7 +3,7 @@ import { ForbiddenError } from '$remult/helpers';
 import { Role } from '$remult/roles';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
-import type { UpdateUserInput } from './inputs/update-user.input';
+import { updateUserSchema, type UpdateUserInput } from './inputs/update-user.input';
 import { User } from './user.entity';
 
 @Controller('UsersController')
@@ -35,14 +35,16 @@ export class UsersController {
 		}
 	}
 
-	@BackendMethod({ allowed: Role.Admin })
+	@BackendMethod({ allowed: true })
 	static async update(updateUserInput: UpdateUserInput) {
-		const { id: userId, email, ...inputs } = updateUserInput;
-		if (!remult.user || remult.user.id !== userId) throw new ForbiddenError();
+		const { id: userId, username, email } = updateUserSchema.parse(updateUserInput);
+		if (!Role.Admin && (!remult.user || remult.user.id !== userId)) throw new ForbiddenError();
+
+		console.log(updateUserInput);
 
 		const credentials = await remult.repo(UserCredentials).findFirst({ userId });
 		await remult.repo(UserCredentials).update(credentials.id, { email });
 
-		return remult.repo(User).update(userId, inputs);
+		return remult.repo(User).update(userId, { username });
 	}
 }
