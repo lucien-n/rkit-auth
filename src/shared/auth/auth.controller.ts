@@ -3,6 +3,7 @@ import { Session } from '$remult/sessions/session.entity';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { UsersController } from '$remult/users/users.controller';
+import { parseSchema } from '$remult/zod-helpers';
 import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult } from 'remult';
 import { User } from '../users/user.entity';
@@ -14,8 +15,8 @@ export class AuthController {
 	constructor() {}
 
 	@BackendMethod({ allowed: false })
-	static async register(createUserInput: RegisterUserInput) {
-		const { username, email, password } = registerUserSchema.parse(createUserInput);
+	static async register(registerUserInput: RegisterUserInput) {
+		const { username, email, password } = parseSchema(registerUserInput, registerUserSchema);
 
 		await UsersController.exists({ username, email });
 
@@ -39,7 +40,7 @@ export class AuthController {
 
 	@BackendMethod({ allowed: false })
 	static async login(loginUserInput: LoginUserInput) {
-		const { email, password } = loginUserSchema.parse(loginUserInput);
+		const { email, password } = parseSchema(loginUserInput, loginUserSchema);
 
 		const user = await UsersController.findByEmail(email, { credentials: true });
 		if (!user) throw AuthError.UserNotFound;
