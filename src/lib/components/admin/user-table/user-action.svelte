@@ -32,4 +32,4 @@
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<EditUserFormDialog bind:open={openEdit} />
+<EditUserFormDialog bind:open={openEdit} {user} />
