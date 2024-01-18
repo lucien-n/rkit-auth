@@ -1,4 +1,4 @@
-import { getZString } from '$remult/helpers';
+import { getZString } from '$remult/zod-helpers';
 import { z } from 'zod';
 import rules from '../task.rules';
 

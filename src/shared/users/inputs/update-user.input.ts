@@ -1,4 +1,4 @@
-import { getZString, getZStringErrors as gzse } from '$remult/helpers';
+import { getZString, getZStringErrors as gzse } from '$remult/zod-helpers';
 import { z } from 'zod';
 import rules from '../user.rules';
 
