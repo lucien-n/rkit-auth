@@ -25,13 +25,18 @@ export class UsersController {
 		return remult.repo(User).findFirst({ id });
 	}
 
-	@BackendMethod({ allowed: false })
-	static async exists({ username, email }: { username: string; email: string }) {
+	@BackendMethod({ allowed: true })
+	static async exists(
+		{ username, email }: Pick<User, 'username'> & Pick<UserCredentials, 'email'>,
+		omit?: string[]
+	) {
 		for await (const existingUser of remult.repo(User).query({
 			include: { credentials: true }
 		})) {
-			if (username === existingUser.username) throw AuthError.UsernameTaken;
-			if (email === existingUser.credentials?.email) throw AuthError.EmailAlreadyUsed;
+			if (!omit?.includes(existingUser.id)) {
+				if (username === existingUser.username) throw AuthError.UsernameTaken;
+				if (email === existingUser.credentials?.email) throw AuthError.EmailAlreadyUsed;
+			}
 		}
 	}
 
@@ -40,7 +45,7 @@ export class UsersController {
 		const { id: userId, username, email } = updateUserSchema.parse(updateUserInput);
 		if (!Role.Admin && (!remult.user || remult.user.id !== userId)) throw new ForbiddenError();
 
-		console.log(updateUserInput);
+		await UsersController.exists({ username, email }, [userId]);
 
 		const credentials = await remult.repo(UserCredentials).findFirst({ userId });
 		await remult.repo(UserCredentials).update(credentials.id, { email });

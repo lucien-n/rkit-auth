@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { authErrorMessages } from '$lib/helpers';
 	import { User } from '$remult/users/user.entity';
 	import { UsersController } from '$remult/users/users.controller';
 	import { Alert } from '$shadcn/components/ui/alert';
@@ -24,7 +25,12 @@
 			message = '';
 			open = false;
 		} catch (e) {
-			message = JSON.parse(e.message)?.[0]?.message ?? 'An error occured';
+			try {
+				const parsed = JSON.parse(e.message);
+				message = parsed[0]?.message;
+			} catch {
+				message = authErrorMessages[e.message];
+			}
 		}
 	};
 </script>
