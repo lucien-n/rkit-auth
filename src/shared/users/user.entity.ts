@@ -1,8 +1,11 @@
+import { apiPrefilterRole } from '$remult/helpers';
 import { Role } from '$remult/roles';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { Entity, Fields, Relations } from 'remult';
 
-@Entity<User>('users')
+@Entity<User>('users', {
+	apiPrefilter: () => apiPrefilterRole(Role.Admin)
+})
 export class User {
 	@Fields.cuid()
 	id!: string;

@@ -26,4 +26,6 @@
 	{/if}
 </nav>
 
-<slot />
+<main class="h-full w-full">
+	<slot />
+</main>
