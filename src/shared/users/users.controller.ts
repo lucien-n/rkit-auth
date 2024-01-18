@@ -2,6 +2,7 @@ import { AuthError } from '$remult/errors';
 import { ForbiddenError } from '$remult/helpers';
 import { Role } from '$remult/roles';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
+import { parseSchema } from '$remult/zod-helpers';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
 import { updateUserSchema, type UpdateUserInput } from './inputs/update-user.input';
 import { User } from './user.entity';
@@ -42,7 +43,8 @@ export class UsersController {
 
 	@BackendMethod({ allowed: true })
 	static async update(updateUserInput: UpdateUserInput) {
-		const { id: userId, username, email } = updateUserSchema.parse(updateUserInput);
+		const { id: userId, username, email } = parseSchema(updateUserInput, updateUserSchema);
+
 		if (!Role.Admin && (!remult.user || remult.user.id !== userId)) throw new ForbiddenError();
 
 		await UsersController.exists({ username, email }, [userId]);

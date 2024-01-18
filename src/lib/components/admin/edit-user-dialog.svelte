@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { errorMessages } from '$lib/helpers';
 	import { User } from '$remult/users/user.entity';
 	import { UsersController } from '$remult/users/users.controller';
 	import { Alert } from '$shadcn/components/ui/alert';
@@ -25,12 +24,7 @@
 			message = '';
 			open = false;
 		} catch (e) {
-			try {
-				const parsed = JSON.parse(e.message);
-				message = parsed[0]?.message;
-			} catch {
-				message = errorMessages[e.message];
-			}
+			message = e.message;
 		}
 	};
 </script>
