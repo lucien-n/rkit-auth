@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { authErrorMessages } from '$lib/helpers';
+	import { errorMessages } from '$lib/helpers';
 	import { User } from '$remult/users/user.entity';
 	import { UsersController } from '$remult/users/users.controller';
 	import { Alert } from '$shadcn/components/ui/alert';
@@ -29,7 +29,7 @@
 				const parsed = JSON.parse(e.message);
 				message = parsed[0]?.message;
 			} catch {
-				message = authErrorMessages[e.message];
+				message = errorMessages[e.message];
 			}
 		}
 	};
