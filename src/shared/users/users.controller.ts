@@ -1,4 +1,6 @@
 import { AuthError } from '$remult/errors';
+import { ForbiddenError } from '$remult/helpers';
+import { Role } from '$remult/roles';
 import { Session } from '$remult/sessions/session.entity';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
@@ -6,6 +8,7 @@ import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
 import { loginUserSchema, type LoginUserInput } from './inputs/login-user.input';
 import { registerUserSchema, type RegisterUserInput } from './inputs/register-user.input';
+import type { UpdateUserInput } from './inputs/update-user.input';
 import { User } from './user.entity';
 
 @Controller('UsersController')
@@ -79,5 +82,16 @@ export class UsersController {
 			if (username === existingUser.username) throw AuthError.UsernameTaken;
 			if (email === existingUser.credentials?.email) throw AuthError.EmailAlreadyUsed;
 		}
+	}
+
+	@BackendMethod({ allowed: Role.Admin })
+	static async update(updateUserInput: UpdateUserInput) {
+		const { id: userId, email, ...inputs } = updateUserInput;
+		if (!remult.user || remult.user.id !== userId) throw new ForbiddenError();
+
+		const credentials = await remult.repo(UserCredentials).findFirst({ userId });
+		await remult.repo(UserCredentials).update(credentials.id, { email });
+
+		return remult.repo(User).update(userId, inputs);
 	}
 }

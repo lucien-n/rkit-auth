@@ -31,14 +31,6 @@
 {/if}
 <div class="container mt-10 flex h-fit w-full justify-center">
 	{#key users}
-		<UserTable
-			users={users.map(({ id, username, credentials: { email }, roles, createdAt }) => ({
-				id,
-				username,
-				email,
-				roles,
-				createdAt
-			}))}
-		/>
+		<UserTable {users} />
 	{/key}
 </div>

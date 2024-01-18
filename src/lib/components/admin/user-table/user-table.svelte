@@ -1,22 +1,14 @@
 <script lang="ts">
-	import type { Role } from '$remult/roles';
+	import type { User } from '$remult/users/user.entity';
 	import * as Table from '$shadcn/components/ui/table';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { readable } from 'svelte/store';
+	import UserAction from './user-action.svelte';
 	import UserRoles from './user-roles.svelte';
 
-	type TableUser = {
-		id: string;
-		username: string;
-		email: string;
-		roles: Role[];
-		createdAt: Date;
-	};
-
-	export let users: TableUser[] = [];
+	export let users: User[] = [];
 
 	const table = createTable(readable(users));
-	$: console.log(users);
 
 	const columns = table.createColumns([
 		table.column({
@@ -28,8 +20,9 @@
 			header: 'Username'
 		}),
 		table.column({
-			accessor: 'email',
-			header: 'Email'
+			accessor: 'credentials',
+			header: 'Email',
+			cell: ({ value }) => value.email
 		}),
 		table.column({
 			accessor: 'roles',
@@ -40,6 +33,14 @@
 			accessor: 'createdAt',
 			header: 'Created',
 			cell: ({ value }) => value.toLocaleDateString('en-DE')
+		}),
+		table.column({
+			accessor: (user) => user,
+			header: '',
+			cell: ({ value }) =>
+				createRender(UserAction, {
+					user: value
+				})
 		})
 	]);
 
