@@ -1,35 +1,34 @@
 <script lang="ts">
 	import type { User } from '$remult/users/user.entity';
 	import { Button } from '$shadcn/components/ui/button';
-	import * as DropdownMenu from '$shadcn/components/ui/dropdown-menu';
-	import { CaretDown } from 'radix-icons-svelte';
+	import { Pencil1, Trash } from 'radix-icons-svelte';
+	import ConfirmDeleteUserDialog from '../confirm-delete-user-dialog.svelte';
 	import EditUserFormDialog from '../edit-user-dialog.svelte';
 
 	export let user: User;
 	export let openEdit = false;
+
+	let openConfirmDelete = false;
 </script>
 
-<DropdownMenu.Root>
-	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="ghost" builders={[builder]} size="icon" class="relative h-8 w-8 p-0">
-			<span class="sr-only">Open menu</span>
-			<CaretDown />
-		</Button>
-	</DropdownMenu.Trigger>
-	<DropdownMenu.Content>
-		<DropdownMenu.Group>
-			<DropdownMenu.Label>Actions</DropdownMenu.Label>
-			<DropdownMenu.Item on:click={() => navigator.clipboard.writeText(user.id)}>
-				Copy user ID
-			</DropdownMenu.Item>
-		</DropdownMenu.Group>
-		<DropdownMenu.Separator />
-		<DropdownMenu.Item class="m-0 p-0">
-			<button class="w-full px-3 py-2 text-left" on:click={() => (openEdit = true)}
-				>Edit user</button
-			>
-		</DropdownMenu.Item>
-	</DropdownMenu.Content>
-</DropdownMenu.Root>
+<div class="flex gap-2">
+	<Button variant="ghost" class="w-full text-left" size="icon" on:click={() => (openEdit = true)}>
+		<Pencil1 />
+	</Button>
+	<Button
+		variant="destructive"
+		class="w-full text-left"
+		size="icon"
+		on:click={() => (openConfirmDelete = true)}
+	>
+		<Trash />
+	</Button>
+</div>
 
 <EditUserFormDialog bind:open={openEdit} {user} />
+<ConfirmDeleteUserDialog
+	bind:open={openConfirmDelete}
+	{user}
+	on:confirm={() => ({})}
+	on:cancel={() => ({})}
+/>

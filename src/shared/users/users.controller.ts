@@ -54,4 +54,15 @@ export class UsersController {
 
 		return remult.repo(User).update(userId, { username });
 	}
+
+	@BackendMethod({ allowed: true })
+	static async delete(userId: string) {
+		if (!Role.Admin && (!remult.user || remult.user.id !== userId)) throw new ForbiddenError();
+
+		// Since CASCADE isn't a thing yet -- https://discord.com/channels/975754286384418847/975754286384418852/1171321671014154280
+		const userCredentials = await remult.repo(UserCredentials).findFirst({ userId });
+		await remult.repo(UserCredentials).delete(userCredentials.id);
+
+		return remult.repo(User).delete(userId);
+	}
 }
