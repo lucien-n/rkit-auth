@@ -10,7 +10,7 @@ import { remultSveltekit } from 'remult/remult-sveltekit';
 export const handleRemult = remultSveltekit({
 	dataProvider: createPostgresDataProvider({ connectionString: PRIVATE_DATABASE_URL }),
 	getUser: async (event) => {
-		const session = await event.locals.getSession();
+		const session = await event.locals.rauth.getSession();
 
 		if (session) {
 			const user = await UsersController.findById(session.userId);

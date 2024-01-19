@@ -1,5 +1,4 @@
 import { getMessageFromError } from '$lib/helpers';
-import { AuthController } from '$remult/auth/auth.controller';
 import { registerUserSchema } from '$remult/auth/inputs/register-user.input';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
@@ -26,12 +25,7 @@ export const actions: Actions = {
 		const { username, email, password } = form.data;
 
 		try {
-			const { session } = await AuthController.register({
-				username,
-				email,
-				password
-			});
-			event.cookies.set('session', session.id, { path: '/' });
+			await event.locals.rauth.signup({username, email, password})
 		} catch (e) {
 			return message(form, getMessageFromError(e, 'Error during registration'), {
 				status: 401

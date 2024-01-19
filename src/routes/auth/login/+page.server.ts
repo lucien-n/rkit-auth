@@ -1,7 +1,5 @@
 import { getMessageFromError } from '$lib/helpers';
-import { AuthController } from '$remult/auth/auth.controller';
 import { loginUserSchema } from '$remult/auth/inputs/login-user.input';
-import { MAX_AGE_MIN } from '$remult/sessions/session.rules';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
@@ -27,17 +25,7 @@ export const actions: Actions = {
 		const { email, password } = form.data;
 
 		try {
-			const { session } = await AuthController.login({ email, password });
-
-			if (session) {
-				event.cookies.set('session', session.id, {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'strict',
-					secure: process.env.NODE_ENV === 'production',
-					maxAge: MAX_AGE_MIN * 60
-				});
-			}
+			await event.locals.rauth.signin({ email, password });
 		} catch (e) {
 			return message(form, getMessageFromError(e, 'Error during login'), { status: 500 });
 		}

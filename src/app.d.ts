@@ -1,10 +1,10 @@
-import { Session } from '$remult/sessions/session.entity';
+import type { RauthServerClient } from '$lib/server/rauth';
 
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			getSession: () => Promise<Session | null>;
+			rauth: RauthServerClient;
 		}
 		// interface PageData {}
 		// interface PageState {}
