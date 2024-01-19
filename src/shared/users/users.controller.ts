@@ -1,6 +1,5 @@
 import { AuthError } from '$remult/errors';
-import { ForbiddenError } from '$remult/helpers';
-import { Role } from '$remult/roles';
+import { checkUserId as isUserAllowed } from '$remult/helpers';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
 import { parseSchema } from '$remult/zod-helpers';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
@@ -45,7 +44,7 @@ export class UsersController {
 	static async update(updateUserInput: UpdateUserInput) {
 		const { id: userId, username, email } = parseSchema(updateUserInput, updateUserSchema);
 
-		if (!Role.Admin && (!remult.user || remult.user.id !== userId)) throw new ForbiddenError();
+		isUserAllowed(UsersController.findById(userId).then(({ id }) => id));
 
 		await UsersController.exists({ username, email }, [userId]);
 
@@ -57,7 +56,7 @@ export class UsersController {
 
 	@BackendMethod({ allowed: true })
 	static async delete(userId: string) {
-		if (!Role.Admin && (!remult.user || remult.user.id !== userId)) throw new ForbiddenError();
+		isUserAllowed(UsersController.findById(userId).then(({ id }) => id));
 
 		// Since CASCADE isn't a thing yet -- https://discord.com/channels/975754286384418847/975754286384418852/1171321671014154280
 		const userCredentials = await remult.repo(UserCredentials).findFirst({ userId });

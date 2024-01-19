@@ -1,5 +1,5 @@
 import { remult } from 'remult';
-import type { Role } from './roles';
+import { Role } from './roles';
 import type { Session } from './sessions/session.entity';
 
 export class ForbiddenError extends Error {
@@ -20,4 +20,16 @@ export const apiPrefilterRole = (role: Role) => {
 		return { id: remult.user.id };
 	}
 	return { id: 'noone' };
+};
+
+/**
+ * Takes in a promise to avoid a query if user is Admin
+ * @param {string} resourceUserIdPromise The promise returning the user id of the resource
+ */
+export const checkUserId = async (resourceUserIdPromise: Promise<string | undefined | null>) => {
+	if (!remult.user) throw new ForbiddenError();
+
+	if (remult.user.roles?.includes(Role.Admin)) return;
+
+	if (remult.user.id !== (await resourceUserIdPromise)) throw new ForbiddenError();
 };
