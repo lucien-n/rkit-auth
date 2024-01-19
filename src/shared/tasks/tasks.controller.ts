@@ -32,10 +32,7 @@ export class TasksController {
 	static async create(input: CreateTaskInput) {
 		const { title } = parseSchema(input, createTaskSchema);
 
-		const user = remult.user;
-		if (!user) throw 'You must be logged in';
-
-		const author = await UsersController.findById(user.id);
+		const author = await UsersController.findById(remult.user!.id); // since allowed is set to authenticated, remult user should always be defined
 		if (!author) throw 'Invalid user';
 
 		return remult
