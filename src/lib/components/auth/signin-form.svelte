@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { loginUserSchema, type LoginUserSchema } from '$remult/users/inputs/login-user.input';
+	import { loginUserSchema, type LoginUserSchema } from '$remult/auth/inputs/login-user.input';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
 	import { createEventDispatcher } from 'svelte';

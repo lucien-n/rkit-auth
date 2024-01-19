@@ -3,7 +3,7 @@
 	import {
 		registerUserSchema,
 		type RegisterUserSchema
-	} from '$remult/users/inputs/register-user.input';
+	} from '$remult/auth/inputs/register-user.input';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
 	import { createEventDispatcher } from 'svelte';
