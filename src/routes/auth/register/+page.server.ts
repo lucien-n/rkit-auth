@@ -1,5 +1,5 @@
 import { getMessageFromError } from '$lib/helpers';
-import { registerUserSchema } from '$remult/auth/inputs/register-user.input';
+import { signupUserSchema } from '$remult/auth/inputs/signup-user.input';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
@@ -9,13 +9,13 @@ export const load: PageServerLoad = async ({ parent }) => {
 	if (session) redirect(303, '/');
 
 	return {
-		form: await superValidate(registerUserSchema)
+		form: await superValidate(signupUserSchema)
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, registerUserSchema);
+		const form = await superValidate(event, signupUserSchema);
 		if (!form.valid) {
 			return fail(400, {
 				form
@@ -25,7 +25,7 @@ export const actions: Actions = {
 		const { username, email, password } = form.data;
 
 		try {
-			await event.locals.rauth.signup({username, email, password})
+			await event.locals.rauth.signup({ username, email, password });
 		} catch (e) {
 			return message(form, getMessageFromError(e, 'Error during registration'), {
 				status: 401

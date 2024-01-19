@@ -5,15 +5,15 @@ export const ROUTES = {
 	profile: { root: '/profile', settings: '/profile/settings' },
 	admin: { root: '/admin' },
 	auth: {
-		login: '/auth/login',
-		register: '/auth/register',
-		logout: '/auth/logout'
+		signin: '/auth/signin',
+		signup: '/auth/signup',
+		signout: '/auth/signout'
 	}
 };
 
 export const REDIRECTS = {
-	[ROUTES.auth.login]: ['/signin', '/login', '/auth/signin'],
-	[ROUTES.auth.register]: ['/signup', '/register', '/auth/signup'],
+	[ROUTES.auth.signin]: ['/signin', '/signin', '/auth/signin'],
+	[ROUTES.auth.signup]: ['/signup', '/signup', '/auth/signup'],
 	[ROUTES.home]: ['/home', '/index']
 };
 

@@ -16,13 +16,13 @@
 
 <nav>
 	{#if user}
-		<form action={ROUTES.auth.logout} method="POST">
+		<form action={ROUTES.auth.signout} method="POST">
 			<Button type="submit">Sign Out</Button>
 			<Button href={ROUTES.admin.root}>Admin</Button>
 		</form>
 	{:else}
-		<Button href={ROUTES.auth.login}>Login</Button>
-		<Button href={ROUTES.auth.register}>Register</Button>
+		<Button href={ROUTES.auth.signin}>Login</Button>
+		<Button href={ROUTES.auth.signup}>Signup</Button>
 	{/if}
 </nav>
 

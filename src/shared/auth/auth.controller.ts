@@ -7,16 +7,16 @@ import { parseSchema } from '$remult/zod-helpers';
 import bcrypt from 'bcrypt';
 import { BackendMethod, Controller, remult } from 'remult';
 import { User } from '../users/user.entity';
-import { loginUserSchema, type LoginUserInput } from './inputs/login-user.input';
-import { registerUserSchema, type RegisterUserInput } from './inputs/register-user.input';
+import { signinUserSchema, type SigninUserInput } from './inputs/signin-user.input';
+import { signupUserSchema, type SignupUserInput } from './inputs/signup-user.input';
 
 @Controller('AuthController')
 export class AuthController {
 	constructor() {}
 
 	@BackendMethod({ allowed: false })
-	static async register(registerUserInput: RegisterUserInput) {
-		const { username, email, password } = parseSchema(registerUserInput, registerUserSchema);
+	static async signup(signupUserInput: SignupUserInput) {
+		const { username, email, password } = parseSchema(signupUserInput, signupUserSchema);
 
 		await UsersController.exists({ username, email });
 
@@ -39,8 +39,8 @@ export class AuthController {
 	}
 
 	@BackendMethod({ allowed: false })
-	static async login(loginUserInput: LoginUserInput) {
-		const { email, password } = parseSchema(loginUserInput, loginUserSchema);
+	static async signin(signinUserInput: SigninUserInput) {
+		const { email, password } = parseSchema(signinUserInput, signinUserSchema);
 
 		const user = await UsersController.findByEmail(email, { credentials: true });
 		if (!user) throw AuthError.UserNotFound;
@@ -54,7 +54,7 @@ export class AuthController {
 	}
 
 	@BackendMethod({ allowed: false })
-	static async logout(sessionId: string) {
+	static async signout(sessionId: string) {
 		return remult.repo(Session).delete(sessionId);
 	}
 }

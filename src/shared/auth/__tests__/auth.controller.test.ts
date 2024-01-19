@@ -12,10 +12,10 @@ describe('AuthController', () => {
 		remult.dataProvider = new InMemoryDataProvider();
 	});
 
-	describe('register', () => {
+	describe('signup', () => {
 		it('should throw error if inputs are invalid', async () => {
 			await expect(
-				AuthController.register({
+				AuthController.signup({
 					username: 'Us',
 					password: '1234567',
 					email: 'user.mail.com'
@@ -50,7 +50,7 @@ describe('AuthController', () => {
 			);
 		});
 
-		it('should register user', async () => {
+		it('should signup user', async () => {
 			vi.spyOn(SessionsController, 'create').mockReturnValueOnce(
 				new Promise((r) =>
 					r({
@@ -65,7 +65,7 @@ describe('AuthController', () => {
 				)
 			);
 
-			const { session, user } = await AuthController.register({
+			const { session, user } = await AuthController.signup({
 				username: 'SlimShady313',
 				email: 'shady313@mail.com',
 				password: 'verySecurePassword'
@@ -88,10 +88,10 @@ describe('AuthController', () => {
 		});
 	});
 
-	describe('login', () => {
+	describe('signin', () => {
 		it('should throw error if inputs are invalid', async () => {
 			await expect(
-				AuthController.login({
+				AuthController.signin({
 					email: 'user.mail.com',
 					password: '1234567'
 				})
@@ -119,7 +119,7 @@ describe('AuthController', () => {
 
 	describe('exists', () => {
 		it('should throw username taken error', async () => {
-			await AuthController.register({
+			await AuthController.signup({
 				username: 'Taken Username',
 				email: 'john.doe@mail.com',
 				password: 'password'
@@ -131,7 +131,7 @@ describe('AuthController', () => {
 		});
 
 		it('should throw email alerady used error', async () => {
-			await AuthController.register({
+			await AuthController.signup({
 				username: 'Username',
 				email: 'taken@mail.com',
 				password: 'password'

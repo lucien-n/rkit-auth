@@ -1,6 +1,6 @@
 import { AuthController } from '$remult/auth/auth.controller';
-import type { LoginUserInput } from '$remult/auth/inputs/login-user.input';
-import type { RegisterUserInput } from '$remult/auth/inputs/register-user.input';
+import type { SigninUserInput } from '$remult/auth/inputs/signin-user.input';
+import type { SignupUserInput } from '$remult/auth/inputs/signup-user.input';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import type { RequestEvent } from '@sveltejs/kit';
 
@@ -47,16 +47,16 @@ export const createRauthServerClient = (
 		return SessionsController.get(sessionId);
 	};
 
-	const signin = async (signinCredentials: LoginUserInput) => {
-		const { session } = await AuthController.login(signinCredentials);
+	const signin = async (signinCredentials: SigninUserInput) => {
+		const { session } = await AuthController.signin(signinCredentials);
 
 		if (session) {
 			setSessionCookie(session.id);
 		}
 	};
 
-	const signup = async (signupCredentials: RegisterUserInput) => {
-		const { session, user } = await AuthController.register(signupCredentials);
+	const signup = async (signupCredentials: SignupUserInput) => {
+		const { session, user } = await AuthController.signup(signupCredentials);
 
 		setSessionCookie(session.id);
 
@@ -67,7 +67,7 @@ export const createRauthServerClient = (
 		const session = await getSession();
 
 		if (session) {
-			await AuthController.logout(session.id);
+			await AuthController.signout(session.id);
 			deleteSessionCookie();
 		}
 	};

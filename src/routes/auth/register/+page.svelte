@@ -12,7 +12,7 @@
 <FormLayout>
 	<h1 slot="title" class="text-center text-3xl font-bold">Sign Up</h1>
 	<p slot="description" class="text-center">
-		Already have an account? <Button variant="link" href="/auth/login" class="p-0">Sign In</Button>
+		Already have an account? <Button variant="link" href="/auth/signin" class="p-0">Sign In</Button>
 	</p>
 
 	<SignupForm
