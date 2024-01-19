@@ -18,12 +18,12 @@ export const getZString = (field: string, { min, max }: { min: number; max: numb
 		.min(min, getZLengthError(min, field, 'min'))
 		.max(max, getZLengthError(max, field, 'max'));
 
-export const validateWithRules = (field: string, { min, max }: { min: number; max: number }) => {
+export const validateWithZRules = (field: string, { min, max }: { min: number; max: number }) => {
 	if (field.length < min) throw getZLengthError(min, field, 'min');
 	if (field.length > max) throw getZLengthError(max, field, 'max');
 };
 
-export const parseSchema = <Schema extends ZodType>(inputs: z.infer<Schema>, schema: Schema) => {
+export const parseZSchema = <Schema extends ZodType>(inputs: z.infer<Schema>, schema: Schema) => {
 	const result = schema.safeParse(inputs);
 	if (!result.success) {
 		throw result.error.issues[0].message;

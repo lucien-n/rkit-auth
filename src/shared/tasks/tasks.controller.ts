@@ -1,6 +1,6 @@
 import { ForbiddenError } from '$remult/helpers';
 import { UsersController } from '$remult/users/users.controller';
-import { parseSchema } from '$remult/zod-helpers';
+import { parseZSchema } from '$remult/zod-helpers';
 import { Allow, BackendMethod, Controller, remult } from 'remult';
 import { createTaskSchema, type CreateTaskInput } from './inputs/create-task.input';
 import { Task } from './task.entity';
@@ -30,7 +30,7 @@ export class TasksController {
 
 	@BackendMethod({ allowed: Allow.authenticated })
 	static async create(input: CreateTaskInput) {
-		const { title } = parseSchema(input, createTaskSchema);
+		const { title } = parseZSchema(input, createTaskSchema);
 
 		const author = await UsersController.findById(remult.user!.id); // since allowed is set to authenticated, remult user should always be defined
 		if (!author) throw 'Invalid user';

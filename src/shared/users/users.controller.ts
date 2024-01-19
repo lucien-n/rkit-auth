@@ -1,7 +1,7 @@
 import { AuthError } from '$remult/errors';
 import { checkUserId as isUserAllowed } from '$remult/helpers';
 import { UserCredentials } from '$remult/user-credentials/user-credentials.entity';
-import { parseSchema } from '$remult/zod-helpers';
+import { parseZSchema } from '$remult/zod-helpers';
 import { BackendMethod, Controller, remult, type MembersToInclude } from 'remult';
 import { updateUserSchema, type UpdateUserInput } from './inputs/update-user.input';
 import { User } from './user.entity';
@@ -42,7 +42,7 @@ export class UsersController {
 
 	@BackendMethod({ allowed: true })
 	static async update(updateUserInput: UpdateUserInput) {
-		const { id: userId, username, email } = parseSchema(updateUserInput, updateUserSchema);
+		const { id: userId, username, email } = parseZSchema(updateUserInput, updateUserSchema);
 
 		isUserAllowed(UsersController.findById(userId).then(({ id }) => id));
 
