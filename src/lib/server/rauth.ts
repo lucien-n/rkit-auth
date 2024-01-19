@@ -15,6 +15,10 @@ const setSessionCookie = (event: RequestEvent, key: string) => {
 	});
 };
 
+const deleteSessionCookie = (event: RequestEvent) => {
+	event.cookies.delete('session', { path: '/' });
+};
+
 export const createRauthServerClient = (event: RequestEvent) => {
 	const getSession = async () => {
 		const sessionId = event.cookies.get('session');
@@ -46,7 +50,7 @@ export const createRauthServerClient = (event: RequestEvent) => {
 
 		if (session) {
 			await AuthController.logout(session.id);
-			event.cookies.delete('session', { path: '/' });
+			deleteSessionCookie(event);
 		}
 	};
 
