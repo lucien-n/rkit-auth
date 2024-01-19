@@ -1,7 +1,7 @@
 import { getMessageFromError } from '$lib/helpers';
 import { AuthController } from '$remult/auth/auth.controller';
+import { loginUserSchema } from '$remult/auth/inputs/login-user.input';
 import { MAX_AGE_MIN } from '$remult/sessions/session.rules';
-import { loginUserSchema } from '$remult/users/inputs/login-user.input';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';

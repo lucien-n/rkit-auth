@@ -1,6 +1,6 @@
 import { getMessageFromError } from '$lib/helpers';
 import { AuthController } from '$remult/auth/auth.controller';
-import { registerUserSchema } from '$remult/users/inputs/register-user.input';
+import { registerUserSchema } from '$remult/auth/inputs/register-user.input';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
