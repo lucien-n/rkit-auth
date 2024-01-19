@@ -5,6 +5,16 @@ import { MAX_AGE_MIN } from '$remult/sessions/session.rules';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import type { RequestEvent } from '@sveltejs/kit';
 
+const setSessionCookie = (event: RequestEvent, key: string) => {
+	event.cookies.set('session', key, {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'strict',
+		secure: process.env.NODE_ENV === 'production',
+		maxAge: MAX_AGE_MIN * 60
+	});
+};
+
 export const createRauthServerClient = (event: RequestEvent) => {
 	const getSession = async () => {
 		const sessionId = event.cookies.get('session');
@@ -19,20 +29,14 @@ export const createRauthServerClient = (event: RequestEvent) => {
 		const { session } = await AuthController.login(signinCredentials);
 
 		if (session) {
-			event.cookies.set('session', session.id, {
-				path: '/',
-				httpOnly: true,
-				sameSite: 'strict',
-				secure: process.env.NODE_ENV === 'production',
-				maxAge: MAX_AGE_MIN * 60
-			});
+			setSessionCookie(event, session.id);
 		}
 	};
 
 	const signup = async (signupCredentials: RegisterUserInput) => {
 		const { session, user } = await AuthController.register(signupCredentials);
 
-		event.cookies.set('session', session.id, { path: '/' });
+		setSessionCookie(event, session.id);
 
 		return user;
 	};
