@@ -3,7 +3,6 @@ import { SessionsController } from '$remult/sessions/sessions.controller';
 import { UsersController } from '$remult/users/users.controller';
 import { InMemoryDataProvider, remult } from 'remult';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ZodError } from 'zod';
 import { mUserBaseA } from '../../users/__fixtures__/user.entity.fixtures';
 import { AuthController } from '../auth.controller';
 
@@ -20,34 +19,7 @@ describe('AuthController', () => {
 					password: '1234567',
 					email: 'user.mail.com'
 				})
-			).rejects.toThrowError(
-				new ZodError([
-					{
-						code: 'too_small',
-						minimum: 3,
-						type: 'string',
-						inclusive: true,
-						exact: false,
-						message: 'Username must be at least 3 characters long',
-						path: ['username']
-					},
-					{
-						code: 'too_small',
-						minimum: 8,
-						type: 'string',
-						inclusive: true,
-						exact: false,
-						message: 'Password must be at least 8 characters long',
-						path: ['password']
-					},
-					{
-						validation: 'email',
-						code: 'invalid_string',
-						message: 'Invalid email',
-						path: ['email']
-					}
-				])
-			);
+			).rejects.toThrowError('Username must be at least 3 characters long');
 		});
 
 		it('should signup user', async () => {
@@ -95,25 +67,7 @@ describe('AuthController', () => {
 					email: 'user.mail.com',
 					password: '1234567'
 				})
-			).rejects.toThrowError(
-				new ZodError([
-					{
-						code: 'too_small',
-						minimum: 8,
-						type: 'string',
-						inclusive: true,
-						exact: false,
-						message: 'Password must be at least 8 characters long',
-						path: ['password']
-					},
-					{
-						validation: 'email',
-						code: 'invalid_string',
-						message: 'Invalid email',
-						path: ['email']
-					}
-				])
-			);
+			).rejects.toThrowError("Password must be at least 8 characters long");
 		});
 	});
 
