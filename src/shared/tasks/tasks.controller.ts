@@ -8,16 +8,13 @@ import { Task } from './task.entity';
 
 @Controller('TasksController')
 export class TasksController {
-	constructor() { }
+	constructor() {}
 
 	@BackendMethod({ allowed: Allow.authenticated })
 	static async findByAuthor(authorId: string) {
 		if (authorId !== remult.user?.id) throw new ForbiddenError();
 
-		return remult
-			.repo(Task)
-			.find({ where: { authorId } })
-
+		return remult.repo(Task).find({ where: { authorId } });
 	}
 
 	@BackendMethod({ allowed: Allow.authenticated })
@@ -27,8 +24,6 @@ export class TasksController {
 		const author = await UsersController.findById(remult.user!.id); // since allowed is set to authenticated, remult user should always be defined
 		if (!author) throw Error.InvalidUser;
 
-		return remult
-			.repo(Task)
-			.insert({ title, author })
+		return remult.repo(Task).insert({ title, author });
 	}
 }

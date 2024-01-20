@@ -15,15 +15,16 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-	default: async (event) => superFormAction(event, signupUserSchema, async (form) => {
-		const { username, email, password } = form.data;
+	default: async (event) =>
+		superFormAction(event, signupUserSchema, async (form) => {
+			const { username, email, password } = form.data;
 
-		try {
-			await event.locals.rauth.signup({ username, email, password });
-		} catch (e) {
-			return message(form, getMessageFromError(e, 'Error during signup'), {
-				status: 401
-			});
-		}
-	})
+			try {
+				await event.locals.rauth.signup({ username, email, password });
+			} catch (e) {
+				return message(form, getMessageFromError(e, 'Error during signup'), {
+					status: 401
+				});
+			}
+		})
 };

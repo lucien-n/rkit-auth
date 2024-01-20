@@ -7,13 +7,14 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async () => {
 	return {
 		form: await superValidate(createTaskSchema)
-	}
-}
+	};
+};
 
 export const actions: Actions = {
-	default: async (event) => superFormAction(event, createTaskSchema, async (form) => {
-		const { title } = form.data;
+	default: async (event) =>
+		superFormAction(event, createTaskSchema, async (form) => {
+			const { title } = form.data;
 
-		await TasksController.create({ title });
-	})
+			await TasksController.create({ title });
+		})
 };

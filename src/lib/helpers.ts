@@ -16,8 +16,8 @@ export const authErrorMessages = {
 export const errorMessages = {
 	[Error.InternalError]: 'Internal error',
 	[Error.Forbidden]: 'Access to this resource is forbiden',
-	[Error.InvalidUser]: "Invalid user",
-	[Error.AuthRequired]: "Authentication required",
+	[Error.InvalidUser]: 'Invalid user',
+	[Error.AuthRequired]: 'Authentication required',
 	...authErrorMessages
 };
 

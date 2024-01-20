@@ -15,13 +15,14 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-	default: async (event) => superFormAction(event, signinUserSchema, async (form) => {
-		const { email, password } = form.data;
+	default: async (event) =>
+		superFormAction(event, signinUserSchema, async (form) => {
+			const { email, password } = form.data;
 
-		try {
-			await event.locals.rauth.signin({ email, password });
-		} catch (e) {
-			return message(form, getMessageFromError(e, 'Error during signin'), { status: 500 });
-		}
-	})
+			try {
+				await event.locals.rauth.signin({ email, password });
+			} catch (e) {
+				return message(form, getMessageFromError(e, 'Error during signin'), { status: 500 });
+			}
+		})
 };

@@ -3,7 +3,8 @@ import { ZodType, z } from 'zod';
 const capitalizeFirst = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const getZLengthError = (length: number, field: string, type: 'min' | 'max' = 'min') =>
-	`${capitalizeFirst(field)} must be at ${type === 'min' ? 'least' : 'most'
+	`${capitalizeFirst(field)} must be at ${
+		type === 'min' ? 'least' : 'most'
 	} ${length} characters long`;
 
 export const getZStringErrors = (field: string) => ({

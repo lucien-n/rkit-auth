@@ -67,7 +67,7 @@ describe('AuthController', () => {
 					email: 'user.mail.com',
 					password: '1234567'
 				})
-			).rejects.toThrowError("Password must be at least 8 characters long");
+			).rejects.toThrowError('Password must be at least 8 characters long');
 		});
 	});
 
