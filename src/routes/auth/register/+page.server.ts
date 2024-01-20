@@ -27,7 +27,7 @@ export const actions: Actions = {
 		try {
 			await event.locals.rauth.signup({ username, email, password });
 		} catch (e) {
-			return message(form, getMessageFromError(e, 'Error during registration'), {
+			return message(form, getMessageFromError(e, 'Error during signup'), {
 				status: 401
 			});
 		}
