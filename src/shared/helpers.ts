@@ -1,13 +1,7 @@
 import { remult } from 'remult';
+import { Error } from './errors';
 import { Role } from './roles';
 import type { Session } from './sessions/session.entity';
-
-export class ForbiddenError extends Error {
-	constructor(message: string = 'Access to this resource is forbidden') {
-		super(message);
-		this.name = 'ForbiddenError';
-	}
-}
 
 export const formatUserSession = (session: Session) => ({
 	...session,
@@ -27,9 +21,9 @@ export const apiPrefilterRole = (role: Role) => {
  * @param {string} resourceUserIdPromise The promise returning the user id of the resource
  */
 export const checkUserId = async (resourceUserIdPromise: Promise<string | undefined | null>) => {
-	if (!remult.user) throw new ForbiddenError();
+	if (!remult.user) throw Error.AuthRequired;
 
 	if (remult.user.roles?.includes(Role.Admin)) return;
 
-	if (remult.user.id !== (await resourceUserIdPromise)) throw new ForbiddenError();
+	if (remult.user.id !== (await resourceUserIdPromise)) throw Error.Forbidden;
 };

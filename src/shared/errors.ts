@@ -6,5 +6,8 @@ export enum AuthError {
 }
 
 export enum Error {
-	InternalError = 'internal-error'
+	InternalError = 'internal-error',
+	InvalidUser = "invalid-user",
+	AuthRequired = "auth-required",
+	Forbidden = "forbidden"
 }

@@ -1,3 +1,4 @@
+import { Error } from '$remult/errors';
 import { ForbiddenError } from '$remult/helpers';
 import { UsersController } from '$remult/users/users.controller';
 import { parseZSchema } from '$remult/zod-helpers';
@@ -24,7 +25,7 @@ export class TasksController {
 		const { title } = parseZSchema(input, createTaskSchema);
 
 		const author = await UsersController.findById(remult.user!.id); // since allowed is set to authenticated, remult user should always be defined
-		if (!author) throw 'Invalid user';
+		if (!author) throw Error.InvalidUser;
 
 		return remult
 			.repo(Task)
