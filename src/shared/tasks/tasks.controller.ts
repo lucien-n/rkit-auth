@@ -7,7 +7,7 @@ import { Task } from './task.entity';
 
 @Controller('TasksController')
 export class TasksController {
-	constructor() {}
+	constructor() { }
 
 	@BackendMethod({ allowed: Allow.authenticated })
 	static async findByAuthor(authorUid: string) {
@@ -16,16 +16,7 @@ export class TasksController {
 		return remult
 			.repo(Task)
 			.find({ where: { authorId: remult.user.id } })
-			.then((tasks) =>
-				tasks.map((task) => {
-					return {
-						id: task.id,
-						title: task.title,
-						completed: task.completed,
-						authorId: task.authorId
-					};
-				})
-			);
+
 	}
 
 	@BackendMethod({ allowed: Allow.authenticated })
@@ -38,13 +29,5 @@ export class TasksController {
 		return remult
 			.repo(Task)
 			.insert({ title, author })
-			.then((task) => {
-				return {
-					id: task.id,
-					title: task.title,
-					completed: task.completed,
-					authorId: task.authorId
-				};
-			});
 	}
 }

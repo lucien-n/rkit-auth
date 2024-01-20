@@ -32,11 +32,10 @@ export const actions: Actions = {
 
 		const { title } = form.data;
 
-		const task = await TasksController.create({ title });
+		await TasksController.create({ title });
 
 		return {
 			form,
-			task
 		};
 	}
 };
