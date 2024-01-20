@@ -13,14 +13,14 @@
 	let message = '';
 
 	export const save = async () => {
-		const {
-			id,
-			username,
-			credentials: { email }
-		} = user;
+		const { id, username, credentials } = user;
 
 		try {
-			await UsersController.update({ id, username, email });
+			await UsersController.update({
+				id,
+				username,
+				...(credentials ? { email: credentials.email } : {})
+			});
 			message = '';
 			open = false;
 		} catch (e) {

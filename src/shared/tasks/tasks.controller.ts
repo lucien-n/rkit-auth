@@ -1,5 +1,4 @@
 import { Error } from '$remult/errors';
-import { ForbiddenError } from '$remult/helpers';
 import { UsersController } from '$remult/users/users.controller';
 import { parseZSchema } from '$remult/zod-helpers';
 import { Allow, BackendMethod, Controller, remult } from 'remult';
@@ -12,7 +11,7 @@ export class TasksController {
 
 	@BackendMethod({ allowed: Allow.authenticated })
 	static async findByAuthor(authorId: string) {
-		if (authorId !== remult.user?.id) throw new ForbiddenError();
+		if (authorId !== remult.user?.id) throw Error.Forbidden;
 
 		return remult.repo(Task).find({ where: { authorId } });
 	}
