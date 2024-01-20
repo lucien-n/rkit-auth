@@ -10,12 +10,12 @@ export class TasksController {
 	constructor() { }
 
 	@BackendMethod({ allowed: Allow.authenticated })
-	static async findByAuthor(authorUid: string) {
-		if (authorUid !== remult.user?.id) throw new ForbiddenError();
+	static async findByAuthor(authorId: string) {
+		if (authorId !== remult.user?.id) throw new ForbiddenError();
 
 		return remult
 			.repo(Task)
-			.find({ where: { authorId: remult.user.id } })
+			.find({ where: { authorId } })
 
 	}
 
