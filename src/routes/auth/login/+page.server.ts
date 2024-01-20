@@ -1,6 +1,7 @@
 import { getMessageFromError } from '$lib/helpers';
+import { superFormAction } from '$lib/server/super-utils';
 import { signinUserSchema } from '$remult/auth/inputs/signin-user.input';
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -14,14 +15,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-	default: async (event) => {
-		const form = await superValidate(event, signinUserSchema);
-		if (!form.valid) {
-			return fail(400, {
-				form
-			});
-		}
-
+	default: async (event) => superFormAction(event, signinUserSchema, async (form) => {
 		const { email, password } = form.data;
 
 		try {
@@ -29,9 +23,5 @@ export const actions: Actions = {
 		} catch (e) {
 			return message(form, getMessageFromError(e, 'Error during signin'), { status: 500 });
 		}
-
-		return {
-			form
-		};
-	}
+	})
 };
