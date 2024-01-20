@@ -4,17 +4,8 @@ import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ parent }) => {
-	const { session } = await parent();
-
+export const load: PageServerLoad = async () => {
 	const form = await superValidate(createTaskSchema);
-
-	if (session?.user?.id) {
-		return {
-			tasks: TasksController.findByAuthor(session.user.id),
-			form
-		};
-	}
 
 	return {
 		form
