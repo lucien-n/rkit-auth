@@ -12,14 +12,17 @@
 
 	let message = '';
 
+	let newEmail = user.credentials?.email ?? 'error';
+	let newUsername = user.username;
+
 	export const save = async () => {
 		const { id, username, credentials } = user;
 
 		try {
 			await UsersController.update({
 				id,
-				username,
-				...(credentials ? { email: credentials.email } : {})
+				username: newUsername,
+				email: newEmail
 			});
 			message = '';
 			open = false;
@@ -42,11 +45,11 @@
 		<div class="grid gap-4 py-4">
 			<div class="grid grid-cols-4 items-center gap-4">
 				<Label for="username" class="text-right">Username</Label>
-				<Input id="username" bind:value={user.username} class="col-span-3" />
+				<Input id="username" bind:value={newUsername} class="col-span-3" />
 			</div>
 			<div class="grid grid-cols-4 items-center gap-4">
 				<Label for="email" class="text-right">Email</Label>
-				<Input id="email" bind:value={user.credentials.email} class="col-span-3" />
+				<Input id="email" bind:value={newEmail} class="col-span-3" />
 			</div>
 		</div>
 		<Dialog.Footer>

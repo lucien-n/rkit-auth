@@ -4,8 +4,8 @@ import rules from '../user.rules';
 
 export const updateUserSchema = z.object({
 	id: z.string(),
-	username: getZString('username', rules.username),
-	email: z.string(gzse('email')).email('Invalid email')
+	username: getZString('username', rules.username).optional(),
+	email: z.string(gzse('email')).email('Invalid email').optional()
 });
 
 export type UpdateUserSchema = typeof updateUserSchema;
