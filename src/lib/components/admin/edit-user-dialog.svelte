@@ -16,11 +16,9 @@
 	let newUsername = user.username;
 
 	export const save = async () => {
-		const { id, username, credentials } = user;
-
 		try {
 			await UsersController.update({
-				id,
+				id: user.id,
 				username: newUsername,
 				email: newEmail
 			});
