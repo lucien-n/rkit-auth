@@ -21,8 +21,8 @@
 			<Button href={ROUTES.admin.root}>Admin</Button>
 		</form>
 	{:else}
-		<Button href={ROUTES.auth.signin}>Signin</Button>
-		<Button href={ROUTES.auth.signup}>Signup</Button>
+		<Button href={ROUTES.auth.signin}>Sign In</Button>
+		<Button href={ROUTES.auth.signup}>Sign Up</Button>
 	{/if}
 </nav>
 
