@@ -4,10 +4,11 @@ import { signinUserSchema } from '$remult/auth/inputs/signin-user.input';
 import { redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
+import { ROUTES } from '$lib/routes';
 
 export const load: PageServerLoad = async ({ parent }) => {
 	const { session } = await parent();
-	if (session) redirect(303, '/');
+	if (session) redirect(303, ROUTES.home);
 
 	return {
 		form: await superValidate(signinUserSchema)

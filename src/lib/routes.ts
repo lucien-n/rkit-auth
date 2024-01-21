@@ -7,7 +7,8 @@ export const ROUTES = {
 	auth: {
 		signin: '/auth/signin',
 		signup: '/auth/signup',
-		signout: '/auth/signout'
+		signout: '/auth/signout',
+		forgotPassword: '/auth/forgot-password'
 	}
 };
 
