@@ -39,7 +39,7 @@
 				-
 
 				<p class="text-muted-foreground">
-					{#each user.roles as role}
+					{#each user.roles ?? [] as role}
 						{role}
 					{/each}
 				</p>
