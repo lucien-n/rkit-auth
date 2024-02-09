@@ -27,7 +27,7 @@ export class UsersController {
 
 	@BackendMethod({ allowed: true })
 	static async exists(
-		{ username, email }: Pick<User, 'username'> & Pick<UserCredentials, 'email'>,
+		{ username, email }: Partial<Pick<User, 'username'> & Pick<UserCredentials, 'email'>>,
 		omit?: string[]
 	) {
 		for await (const existingUser of remult.repo(User).query({
