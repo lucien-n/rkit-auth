@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { signinUserSchema, type LoginUserSchema } from '$remult/auth/inputs/signin-user.input';
+	import { signinUserSchema, type SigninUserSchema } from '$remult/auth/inputs/signin-user.input';
 	import * as Form from '$shadcn/components/ui/form';
 	import type { SubmitFunction, SuperValidated } from 'formsnap';
 	import { createEventDispatcher } from 'svelte';
 
-	export let form: SuperValidated<LoginUserSchema>;
+	export let form: SuperValidated<SigninUserSchema>;
 
 	const dispatch = createEventDispatcher();
 
