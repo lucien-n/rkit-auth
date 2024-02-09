@@ -22,7 +22,7 @@
 		table.column({
 			accessor: 'credentials',
 			header: 'Email',
-			cell: ({ value }) => value.email
+			cell: ({ value }) => value?.email ?? 'No email'
 		}),
 		table.column({
 			accessor: 'roles',
@@ -32,7 +32,7 @@
 		table.column({
 			accessor: 'createdAt',
 			header: 'Created',
-			cell: ({ value }) => value.toLocaleDateString('en-DE')
+			cell: ({ value }) => value?.toLocaleDateString('en-DE') ?? 'No date'
 		}),
 		table.column({
 			accessor: (user) => user,
