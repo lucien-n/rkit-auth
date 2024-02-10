@@ -1,10 +1,10 @@
-import type { RauthServerClient } from '$lib/server/remauth';
+import type { RemauthServerClient } from '$lib/server/remauth';
 
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			remauth: RauthServerClient;
+			remauth: RemauthServerClient;
 		}
 		// interface PageData {}
 		// interface PageState {}

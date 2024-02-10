@@ -4,23 +4,23 @@ import type { SignupUserInput } from '$remult/auth/inputs/signup-user.input';
 import { SessionsController } from '$remult/sessions/sessions.controller';
 import type { RequestEvent } from '@sveltejs/kit';
 
-type RauthServerClientOptions = {
+type RemauthServerClientOptions = {
 	session: {
 		key: string;
 		maxAge: number;
 	};
 };
 
-const defaultServerClientOptions: RauthServerClientOptions = {
+const defaultServerClientOptions: RemauthServerClientOptions = {
 	session: {
 		key: 'session',
 		maxAge: 24
 	}
 };
 
-export const createRauthServerClient = (
+export const createRemauthServerClient = (
 	event: RequestEvent,
-	options: RauthServerClientOptions = defaultServerClientOptions
+	options: RemauthServerClientOptions = defaultServerClientOptions
 ) => {
 	const setSessionCookie = (value: string) => {
 		event.cookies.set(options.session.key, value, {
@@ -80,4 +80,4 @@ export const createRauthServerClient = (
 	};
 };
 
-export type RauthServerClient = ReturnType<typeof createRauthServerClient>;
+export type RemauthServerClient = ReturnType<typeof createRemauthServerClient>;
