@@ -21,7 +21,7 @@ export const actions: Actions = {
 			const { email, password } = form.data;
 
 			try {
-				await event.locals.rauth.signin({ email, password });
+				await event.locals.remauth.signin({ email, password });
 			} catch (e) {
 				return message(form, getMessageFromError(e, 'Error during signin'), { status: 500 });
 			}

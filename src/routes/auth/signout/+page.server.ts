@@ -8,7 +8,7 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	default: async ({ locals }) => {
-		await locals.rauth.signout();
+		await locals.remauth.signout();
 
 		redirect(303, ROUTES.home);
 	}

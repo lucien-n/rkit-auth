@@ -1,9 +1,9 @@
 import { remult } from 'remult';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ locals: { rauth } }) => {
+export const load: LayoutServerLoad = async ({ locals: { remauth } }) => {
 	return {
-		session: await rauth.getSession(),
+		session: await remauth.getSession(),
 		user: remult.user
 	};
 };
